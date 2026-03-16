@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Actra – Policy Based Authorization Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--bg:#0b0f1a;
+--panel:#121826;
+--panel-soft:#1b2336;
+--text:#e6edf7;
+--muted:#94a3b8;
+--accent:#6366f1;
+--accent2:#22d3ee;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Inter,system-ui;
+background:radial-gradient(circle at 20% 10%, #111827, #05070f 70%);
+color:var(--text);
+}
+
+.container{
+max-width:1150px;
+margin:auto;
+padding:24px;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+.logo{
+font-weight:700;
+font-size:22px;
+letter-spacing:.5px;
+}
+
+nav a{
+color:var(--muted);
+margin-left:22px;
+text-decoration:none;
+font-size:14px;
+}
+
+nav a:hover{color:white}
+
+.hero{
+text-align:center;
+padding:80px 0 50px;
+}
+
+.hero h1{
+font-size:50px;
+margin-bottom:16px;
+line-height:1.2;
+}
+
+.hero p{
+color:var(--muted);
+font-size:18px;
+max-width:650px;
+margin:auto;
+}
+
+.buttons{
+margin-top:28px;
+}
+
+.btn{
+display:inline-block;
+padding:12px 24px;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--accent2));
+color:white;
+font-weight:600;
+text-decoration:none;
+margin-right:12px;
+}
+
+.btn.secondary{
+background:var(--panel-soft);
+}
+
+.hero-visual{
+margin-top:60px;
+display:flex;
+justify-content:center;
+}
+
+.flow{
+display:flex;
+align-items:center;
+gap:20px;
+font-size:14px;
+}
+
+.node{
+background:var(--panel);
+padding:16px 20px;
+border-radius:10px;
+border:1px solid #1f2937;
+}
+
+.arrow{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--accent),var(--accent2));
+animation:flow 2s infinite linear;
+}
+
+@keyframes flow{
+0%{opacity:.2}
+50%{opacity:1}
+100%{opacity:.2}
+}
+
+.section{
+padding:70px 0;
+}
+
+.section h2{
+font-size:28px;
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:24px;
+}
+
+.card{
+background:var(--panel);
+border-radius:14px;
+padding:26px;
+border:1px solid #1f2937;
+}
+
+.card h3{
+margin-top:0;
+font-size:18px;
+}
+
+.card p{
+color:var(--muted);
+font-size:14px;
+}
+
+.code-block{
+background:#020617;
+border-radius:14px;
+padding:26px;
+border:1px solid #1e293b;
+overflow:auto;
+font-size:14px;
+font-family:"JetBrains Mono", monospace;
+}
+
+.install-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+footer{
+margin-top:80px;
+padding:40px 0;
+text-align:center;
+color:#64748b;
+font-size:14px;
+}
+</style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='20' r='8' fill='%2322d3ee'/%3E%3Ccircle cx='20' cy='75' r='8' fill='%236366f1'/%3E%3Ccircle cx='80' cy='75' r='8' fill='%236366f1'/%3E%3Cline x1='50' y1='28' x2='20' y2='67' stroke='%2394a3b8' stroke-width='4'/%3E%3Cline x1='50' y1='28' x2='80' y2='67' stroke='%2394a3b8' stroke-width='4'/%3E%3C/svg%3E">
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<div class="logo" style="display:flex;align-items:center;gap:10px;">
+<svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="20" r="8" fill="#22d3ee"/>
+  <circle cx="20" cy="75" r="8" fill="#6366f1"/>
+  <circle cx="80" cy="75" r="8" fill="#6366f1"/>
+  <line x1="50" y1="28" x2="20" y2="67" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="50" y1="28" x2="80" y2="67" stroke="#94a3b8" stroke-width="3"/>
+</svg>
+<span style="font-weight:700;font-size:22px;letter-spacing:.5px;">Actra</span>
+</div>
+
+<nav>
+<a href="#features">Features</a>
+<a href="#example">Example</a>
+<a href="#docs">Docs</a>
+<a href="https://github.com/getactra/actra">GitHub</a>
+</nav>
+</header>
+
+<section class="hero">
+
+<h1>Deterministic Policy Decisions<br/>for Modern Applications</h1>
+
+<p>
+Define authorization rules once and evaluate them consistently across Node, Python, and Rust.
+Actra provides a fast policy engine designed for modern software architectures.
+</p>
+
+<div class="buttons">
+<a class="btn" href="https://github.com/getactra/actra">View on GitHub</a>
+<a class="btn secondary" href="#docs">Get Started</a>
+</div>
+
+<div class="hero-visual">
+<div class="flow">
+<div class="node">Application</div>
+<div class="arrow"></div>
+<div class="node">Actra SDK</div>
+<div class="arrow"></div>
+<div class="node">Policy Engine</div>
+<div class="arrow"></div>
+<div class="node">Decision ✓</div>
+</div>
+</div>
+
+</section>
+
+<section class="section" id="example">
+
+<h2>Authorization Example</h2>
+
+<div class="code-block">
+<pre>
+const actra = new Actra(schema, policy)
+
+const decision = actra.evaluate({
+  actor: { id: "user1", role: "admin" },
+  action: "delete",
+  resource: { owner: "user1" }
+})
+
+console.log(decision.allow)
+</pre>
+</div>
+
+</section>
+
+<section class="section" id="features">
+
+<h2>Features</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Declarative Policies</h3>
+<p>Define authorization logic with clear policy rules.</p>
+</div>
+
+<div class="card">
+<h3>Rust Evaluation Engine</h3>
+<p>High performance runtime built in Rust.</p>
+</div>
+
+<div class="card">
+<h3>Multi Language SDKs</h3>
+<p>Integrate with Node.js, Python, and other platforms.</p>
+</div>
+
+<div class="card">
+<h3>Deterministic Results</h3>
+<p>Consistent policy decisions across environments.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="docs">
+
+<h2>Install</h2>
+
+<div class="install-grid">
+
+<div class="code-block">
+<pre>
+npm install actra
+</pre>
+</div>
+
+<div class="code-block">
+<pre>
+pip install actra
+</pre>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+Actra • Policy Based Authorization Engine
+</footer>
+
+</div>
+
+</body>
+</html>
