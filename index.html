@@ -19,6 +19,10 @@
 
 *{box-sizing:border-box}
 
+html{
+scroll-behavior:smooth;
+}
+
 body{
 margin:0;
 font-family:Inter,system-ui;
@@ -193,6 +197,18 @@ font-size:14px;
   border-bottom:1px solid #1f293b;
 }
 
+.copy-btn{
+margin-left:auto;
+background:var(--panel);
+border:1px solid #1f293b;
+color:var(--muted);
+padding:4px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:12px;
+}
+.copy-btn:hover{background:#1f293b;color:var(--text)}
+
 .code-editor-body{
   padding:26px;
   overflow:auto;
@@ -220,6 +236,45 @@ font-size:14px;
   .example-grid, .install-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.scroller{
+max-width:100%;
+overflow:hidden;
+-webkit-mask-image:linear-gradient(to right,transparent,white 20%,white 80%,transparent);
+mask-image:linear-gradient(to right,transparent,white 20%,white 80%,transparent);
+}
+
+.scroller-inner{
+display:flex;
+gap:40px;
+width:max-content;
+flex-wrap:nowrap;
+}
+
+.scroller[data-animated="true"] .scroller-inner{
+animation:scroll 40s linear infinite;
+}
+
+.logo-item{
+display:flex;
+align-items:center;
+gap:12px;
+color:var(--muted);
+font-size:14px;
+font-weight:500;
+}
+
+.logo-item svg{
+width:24px;
+height:24px;
+opacity:.8;
+}
+
+@keyframes scroll{
+to{
+transform:translate(calc(-50% - 20px));
+}
 }
 
 footer{
@@ -633,7 +688,10 @@ Actra provides a fast policy engine designed for modern software architectures.
 
 <div class="example-grid">
   <div class="code-editor">
-    <div class="code-editor-header">JavaScript</div>
+    <div class="code-editor-header">
+      JavaScript
+      <button class="copy-btn">Copy</button>
+    </div>
     <div class="code-editor-body">
       <pre><span class="token keyword">const</span> actra <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Actra</span><span class="token punctuation">(</span>schema<span class="token punctuation">,</span> policy<span class="token punctuation">)</span>
 
@@ -647,7 +705,10 @@ console<span class="token punctuation">.</span><span class="token function">log<
     </div>
   </div>
   <div class="code-editor">
-    <div class="code-editor-header">Python</div>
+    <div class="code-editor-header">
+      Python
+      <button class="copy-btn">Copy</button>
+    </div>
     <div class="code-editor-body">
       <pre><span class="token keyword">from</span> actra <span class="token keyword">import</span> Actra
 
@@ -696,6 +757,27 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
 
 </section>
 
+<section class="section" id="environments">
+
+<h2>Works Everywhere You Do</h2>
+
+<div class="scroller">
+  <div class="scroller-inner">
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12.23 15.86l-3.31-3.28v-4.44h6.58v2.13h-4.28l2.7 2.68c.62.62.62 1.63 0 2.25-.62.62-1.63.62-2.25 0z"/><path fill="#ffd000" d="M11.77 8.14l3.31 3.28v4.44H8.5v-2.13h4.28l-2.7-2.68c-.62-.62-.62-1.63 0-2.25.62-.62 1.63-.62 2.25 0z"/></svg>Python</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208.1 128.1a12 12 0 0 1-11.9-12.8l8-80a12 12 0 1 1 24 2.4l-8 80a12 12 0 0 1-12.1 10.4Z"/><path fill="currentColor" d="M128 216a88 88 0 0 1-88-88c0-41.5 28.9-76.1 67.9-85.5a12 12 0 1 1 8.2 22.9A64.1 64.1 0 0 0 64 128a64 64 0 0 0 128 0c0-31.1-22.3-57.2-52.1-62.5a12 12 0 1 1 8.2-22.9C187.1 51.9 216 86.5 216 128a88 88 0 0 1-88 88Z"/></svg>Node.js</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208.1 128.1a12 12 0 0 1-11.9-12.8l8-80a12 12 0 1 1 24 2.4l-8 80a12 12 0 0 1-12.1 10.4Z"/><path fill="currentColor" d="M128 216a88 88 0 0 1-88-88c0-41.5 28.9-76.1 67.9-85.5a12 12 0 1 1 8.2 22.9A64.1 64.1 0 0 0 64 128a64 64 0 0 0 128 0c0-31.1-22.3-57.2-52.1-62.5a12 12 0 1 1 8.2-22.9C187.1 51.9 216 86.5 216 128a88 88 0 0 1-88 88Z"/></svg>Bun</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0l-1.4-1.4c-3.1 3.1-8.2 3.1-11.3 0s-3.1-8.2 0-11.3S14.5 3.2 17.7 6.3l-3.8 3.8h8.9V1.2l-3.7 3.7z"/></svg>Cloudflare Workers</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 1.515a3 3 0 0 0-3 0L3 5.25v13.5l7.5 3.75l7.5-3.75V5.25L13.5 1.515zM12 3.23l5.5 2.75l-5.5 2.75l-5.5-2.75L12 3.23zM4.5 6.465l5.5 2.75v10.158l-5.5-2.75V6.465zm15 7.393l-5.5 2.75v-10.16l5.5-2.75v10.16z"/></svg>AWS Lambda</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93c0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41c0 2.08-.8 3.97-2.1 5.39z"/></svg>Web Browsers</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2zm6.02 14.335l-4.31 2.933a.5.5 0 0 1-.71-.448V4.18a.5.5 0 0 1 .71-.448l4.31 2.933a.5.5 0 0 1 0 .895zM9.98 9.665l-4.31 2.933a.5.5 0 0 1 0 .895l4.31 2.933a.5.5 0 0 1 .71-.448V9.217a.5.5 0 0 1-.71.448z"/></svg>Deno</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0L1.53 5.25v13.5L12 24l10.47-5.25V5.25L12 0zm-1.47 19.5l-5.25-2.625v-3.3L8.91 15l-2.625-1.313V10.5L10.53 9v3.3L12 13.125l1.47-.825V9l4.215 1.5v3.188L15.09 15l3.63 1.575v3.3L13.47 19.5V16.2l-1.47.825l-1.47-.825v3.3zM12 7.875L5.25 4.5l6.75-3.375l6.75 3.375L12 7.875z"/></svg>Fastly</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 0l12 21.6H0L12 0z"/></svg>Vercel</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.688 16.551c-2.11-3.654-4.22-7.308-6.33-10.962c-.3-.52-.634-.52-.934 0C10.213 9.243 8.103 12.897 5.993 16.55c-.3.52 0 .865.52.865h12.65c.52 0 .82-.346.525-.864z"/></svg>Netlify</div>
+  </div>
+</div>
+
+</section>
+
 <section class="section" id="get-started">
 
 <h2>Get Started</h2>
@@ -706,6 +788,7 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
   <div class="code-editor-header">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="#8cc84b" d="M128.001 229.333c-55.927 0-101.333-45.405-101.333-101.333S72.074 26.667 128.001 26.667c55.927 0 101.333 45.405 101.333 101.333s-45.406 101.333-101.333 101.333zm-1.66-17.333c46.61 0 84.4-34.463 84.4-77.03 0-42.566-37.79-77.03-84.4-77.03-46.61 0-84.4 34.464-84.4 77.03 0 42.567 37.79 77.03 84.4 77.03zm32.82-50.435l-19.11-11.03v22.05l19.11-11.02zM128 59.933l-33.333 19.24v38.48l33.333-19.24v38.48l-33.333 19.24-33.334-19.24V79.173L128 59.933zm16.667 57.72l33.333-19.24v-38.48l-33.333 19.24v38.48z"/></svg>
     JavaScript / Node.js
+    <button class="copy-btn">Copy</button>
   </div>
   <div class="code-editor-body">
     <pre>npm install actra</pre>
@@ -716,6 +799,7 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
   <div class="code-editor-header">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#3776ab" d="M12.23 15.86l-3.31-3.28v-4.44h6.58v2.13h-4.28l2.7 2.68c.62.62.62 1.63 0 2.25-.62.62-1.63.62-2.25 0z"/><path fill="#ffd000" d="M11.77 8.14l3.31 3.28v4.44H8.5v-2.13h4.28l-2.7-2.68c-.62-.62-.62-1.63 0-2.25.62-.62 1.63-.62 2.25 0z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.28 12c0 5.68-4.6 10.28-10.28 10.28S1.72 17.68 1.72 12 6.32 1.72 12 1.72s10.28 4.6 10.28 10.28zm-2.13 0c0 4.5-3.65 8.14-8.15 8.14-4.5 0-8.14-3.65-8.14-8.14 0-4.5 3.65-8.15 8.14-8.15 4.5 0 8.15 3.65 8.15 8.15z"/></svg>
     Python
+    <button class="copy-btn">Copy</button>
   </div>
   <div class="code-editor-body">
     <pre>pip install actra</pre>
@@ -731,6 +815,42 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
 </footer>
 
 </div>
+
+<script>
+  // --- Copy to Clipboard ---
+  document.querySelectorAll('.copy-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const codeEditor = button.closest('.code-editor');
+        const code = codeEditor.querySelector('.code-editor-body pre').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+            }, 2000);
+        });
+    });
+  });
+
+  // --- Scrolling Logos ---
+  const scrollers = document.querySelectorAll(".scroller");
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    addAnimation();
+  }
+
+  function addAnimation() {
+    scrollers.forEach((scroller) => {
+      scroller.setAttribute("data-animated", true);
+      const scrollerInner = scroller.querySelector(".scroller-inner");
+      const scrollerContent = Array.from(scrollerInner.children);
+
+      scrollerContent.forEach((item) => {
+        const duplicatedItem = item.cloneNode(true);
+        duplicatedItem.setAttribute("aria-hidden", true);
+        scrollerInner.appendChild(duplicatedItem);
+      });
+    });
+  }
+</script>
 
 </body>
 </html>
