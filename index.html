@@ -732,10 +732,15 @@ Define authorization rules once and evaluate them consistently across Node, Pyth
 Actra provides a fast policy engine designed for modern software architectures.
 </p>
 
+<section class="section" style="text-align:center">
+<h2>Start Building with Actra</h2>
+
 <div class="buttons">
-<a class="btn" href="https://github.com/getactra/actra">View on GitHub</a>
-<a class="btn secondary" href="#get-started">Get Started</a>
+  <a class="btn" href="https://github.com/getactra/actra">Get Started</a>
+  <a class="btn secondary" href="#examples">View Examples</a>
+    <a class="btn secondary" href="#Playground">Playground</a>
 </div>
+</section>
 
 <div class="hero-visual">
 <div class="flow">
@@ -911,6 +916,110 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
 
 </div>
 
+</section>
+
+<section class="section">
+<h2>Why Actra?</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3>No Network Calls</h3>
+    <p>All decisions are evaluated locally. No latency, no outages.</p>
+  </div>
+
+  <div class="card">
+    <h3>Deterministic by Design</h3>
+    <p>Same input always produces the same decision across all runtimes.</p>
+  </div>
+
+  <div class="card">
+    <h3>Simple Mental Model</h3>
+    <p>No complex DSLs. Policies are readable and predictable.</p>
+  </div>
+
+  <div class="card">
+    <h3>Edge Ready</h3>
+    <p>Run directly in Cloudflare Workers, browsers, or serverless.</p>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>Explainable Decisions</h2>
+
+<div class="code-editor">
+  <div class="code-editor-header">
+    Decision Output
+    <button class="copy-btn">Copy</button>
+  </div>
+  <div class="code-editor-body">
+<pre>{
+  "allow": true,
+  "matched_rule": "admin_delete_own_post",
+  "reason": "actor.role == admin AND resource.owner_id == actor.id"
+}</pre>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>Use Cases</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3>SaaS Multi-Tenant Access</h3>
+    <p>Isolate tenants and enforce role-based access cleanly.</p>
+  </div>
+
+  <div class="card">
+    <h3>API Authorization</h3>
+    <p>Evaluate permissions inside your API without external services.</p>
+  </div>
+
+  <div class="card">
+    <h3>Frontend Authorization</h3>
+    <p>Run policies directly in the browser for instant UX decisions.</p>
+  </div>
+
+  <div class="card">
+    <h3>Edge Security</h3>
+    <p>Execute authorization at the edge with zero latency overhead.</p>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>Actra vs Traditional Authorization</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3>Traditional</h3>
+    <p>
+    ❌ Network calls<br/>
+    ❌ Inconsistent decisions<br/>
+    ❌ Hard to debug<br/>
+    ❌ Central dependency
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>Actra</h3>
+    <p>
+    ✅ Local evaluation<br/>
+    ✅ Deterministic<br/>
+    ✅ Explainable<br/>
+    ✅ Works everywhere
+    </p>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>Built for Modern Architectures</h2>
+
+<p style="text-align:center;color:var(--muted);max-width:600px;margin:auto">
+Inspired by real-world needs in distributed systems, microservices, and edge computing.
+</p>
 </section>
 
 <footer>
