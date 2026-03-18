@@ -93,6 +93,10 @@ to{background-position:200% center}
 
 .buttons{
 margin-top:28px;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:16px;
 }
 
 .btn{
@@ -103,7 +107,6 @@ background:linear-gradient(135deg,var(--accent),var(--accent2));
 color:white;
 font-weight:600;
 text-decoration:none;
-margin-right:12px;
 transition:transform .2s ease;
 }
 
@@ -186,6 +189,14 @@ border:1px solid #1f2937;
 transition:transform .2s ease,border-color .2s ease;
 }
 
+.card svg{
+width:32px;
+height:32px;
+margin-bottom:16px;
+color:var(--accent2);
+opacity:.9;
+}
+
 .card:hover{transform:translateY(-4px);border-color:var(--accent)}
 
 .card h3{
@@ -261,8 +272,38 @@ font-size:12px;
 .code-editor-body .token.comment{color:#546e7a}
 
 @media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  nav a {
+    margin-left: 0;
+  }
+  .hero {
+    padding: 60px 0 40px;
+  }
+  .hero h1 {
+    font-size: 38px;
+  }
+  .hero p {
+    font-size: 16px;
+  }
   .example-grid, .install-grid {
     grid-template-columns: 1fr;
+  }
+  .flow {
+    flex-direction: column;
+  }
+  .arrow {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
   }
 }
 
@@ -755,6 +796,36 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
 
 </section>
 
+<section class="section" id="policy-in-action">
+
+<h2>Simple, Readable Policies</h2>
+
+<div class="code-editor">
+  <div class="code-editor-header">
+    policies/posts.actra.yaml
+    <button class="copy-btn">Copy</button>
+  </div>
+  <div class="code-editor-body">
+<pre><span class="token comment"># Allow actors with the 'admin' role to delete posts they own.</span>
+
+<span class="token property">actions</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">delete_post</span>
+
+<span class="token property">rules</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token property">effect</span><span class="token punctuation">:</span> <span class="token string">allow</span>
+    <span class="token property">condition</span><span class="token punctuation">:</span>
+      <span class="token property">all</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token property">fact</span><span class="token punctuation">:</span> <span class="token string">actor.role</span>
+          <span class="token property">operator</span><span class="token punctuation">:</span> <span class="token string">equal</span>
+          <span class="token property">value</span><span class="token punctuation">:</span> <span class="token string">"admin"</span>
+        <span class="token punctuation">-</span> <span class="token property">fact</span><span class="token punctuation">:</span> <span class="token string">resource.owner_id</span>
+          <span class="token property">operator</span><span class="token punctuation">:</span> <span class="token string">equal</span>
+          <span class="token property">value</span><span class="token punctuation">:</span> <span class="token string">actor.id</span></pre>
+  </div>
+</div>
+
+</section>
+
 <section class="section" id="features">
 
 <h2>Features</h2>
@@ -762,21 +833,25 @@ decision <span class="token operator">=</span> actra<span class="token punctuati
 <div class="grid">
 
 <div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
 <h3>Declarative Policies</h3>
 <p>Define authorization logic with clear policy rules.</p>
 </div>
 
 <div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2.4-2.4-4.2-4.8-4.8-.7-.2-1.5-.2-2.2 0L12 8l-2.9-2.7c-.7-.7-1.5-.7-2.2 0-2.4.6-4.2 2.4-4.8 4.8-.3 1.4 0 2.7.7 3.9l4.5 7.5 4.5-7.5z"></path><path d="M12 8V2"></path><path d="M7 6.5L3.5 4"></path><path d="M17 6.5L20.5 4"></path></svg>
 <h3>Rust Evaluation Engine</h3>
 <p>High performance runtime built in Rust.</p>
 </div>
 
 <div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22v-8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v8"></path><rect x="2" y="4" width="20" height="8" rx="2"></rect><path d="M14 14v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-8"></path></svg>
 <h3>Multi Language SDKs</h3>
 <p>Integrate with Node.js, Python, and other platforms.</p>
 </div>
 
 <div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
 <h3>Deterministic Results</h3>
 <p>Consistent policy decisions across environments.</p>
 </div>
