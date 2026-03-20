@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Actra Playground</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.css">
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/yaml/yaml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
+
+<style>
+:root{
+--bg:#0b0f1a;
+--panel:#121826;
+--panel-soft:#1b2336;
+--text:#e6edf7;
+--muted:#94a3b8;
+--accent:#6366f1;
+--accent2:#22d3ee;
+}
+
+body{
+margin:0;
+font-family:Inter,system-ui;
+background:var(--bg);
+color:var(--text);
+}
+
+.container{
+max-width:1300px;
+margin:auto;
+padding:24px;
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.editor{
+background:var(--panel);
+border-radius:12px;
+border:1px solid #1f2937;
+display:flex;
+flex-direction:column;
+}
+
+.editor-header{
+padding:10px 14px;
+font-size:13px;
+color:var(--muted);
+border-bottom:1px solid #1f2937;
+background:var(--panel-soft);
+}
+
+textarea{
+background:#020617;
+border:none;
+color:#e6edf7;
+padding:14px;
+font-family:"JetBrains Mono",monospace;
+font-size:13px;
+resize:vertical;
+min-height:200px;
+outline:none;
+}
+
+.actions{
+text-align:center;
+margin:30px 0;
+}
+
+button{
+padding:12px 28px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--accent2));
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+background:var(--panel);
+border-radius:12px;
+border:1px solid #1f2937;
+}
+
+.result pre{
+margin:0;
+padding:20px;
+font-family:"JetBrains Mono",monospace;
+font-size:14px;
+background:#020617;
+color:#c3e88d;
+}
+
+@media (max-width:900px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+.CodeMirror {
+  height: 220px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  background: #020617;
+  color: #e6edf7;
+  border-radius: 0 0 12px 12px;
+}
+
+.CodeMirror-gutters {
+  background: #020617;
+  border-right: 1px solid #1f2937;
+}
+
+.CodeMirror-cursor {
+  border-left: 1px solid #22d3ee;
+}
+
+.tabs {
+  display:flex;
+  gap:10px;
+}
+
+.tab {
+  background:transparent;
+  border:1px solid #1f2937;
+  color:var(--muted);
+  padding:4px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.tab.active {
+  background:var(--panel);
+  color:var(--text);
+  border-color:var(--accent);
+}
+
+.tab:hover {
+  border-color: var(--accent);
+  color: white;
+}
+
+.CodeMirror .highlight-rule {
+  background: rgba(99, 102, 241, 0.2);
+  border-left: 3px solid #6366f1;
+}
+
+.CodeMirror .highlight-rule-success {
+  background: rgba(99, 102, 241, 0.2);
+  border-left: 3px solid #6366f1;
+}
+
+.CodeMirror .highlight-rule-failed {
+  background: rgba(239, 68, 68, 0.15);
+  border-left: 3px solid #ef4444;
+}
+
+.CodeMirror .highlight-condition-success {
+  background: rgba(34, 197, 94, 0.2);
+  border-left: 3px solid #22c55e;
+}
+
+.CodeMirror .highlight-condition-failed {
+  background: rgba(239, 68, 68, 0.2);
+  border-left: 3px solid #ef4444;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Actra Playground</h1>
+
+<div class="grid">
+
+<!-- Schema -->
+<div class="editor">
+<div class="editor-header">Schema YAML</div>
+<textarea id="schema-editor">
+actor:
+  role: string
+action:
+  type: string
+</textarea>
+</div>
+
+<!-- Policy -->
+<div class="editor">
+<div class="editor-header">Policy YAML</div>
+<textarea id="policy-editor">
+actions:
+  - send_email
+
+rules:
+  - id: no_external_email
+    effect: block
+    condition:
+      all:
+        - fact: actor.role
+          operator: equal
+          value: "intern"
+
+  - id: admin_override
+    effect: allow
+    condition:
+      all:
+        - fact: actor.role
+          operator: equal
+          value: "admin"
+</textarea>
+</div>
+
+<!-- Governance -->
+<div class="editor">
+<div class="editor-header">Governance YAML</div>
+<textarea id="governance-editor">
+mode: strict
+</textarea>
+</div>
+
+<!-- Payload -->
+<div class="editor">
+<div class="editor-header">Payload</div>
+<textarea id="payload-editor">
+# Input to policy evaluation
+actor:
+  role: intern        # who is performing action
+
+action:
+  type: send_email    # what is being attempted
+
+snapshot:
+  # optional contextual data about environment/resource
+  resource_owner: external
+</textarea>
+</div>
+
+</div>
+
+<div class="actions">
+<button onclick="runEvaluation()">Validate & Evaluate</button>
+</div>
+
+<!--LEGEND-->
+<div class="editor" style="margin-top:20px">
+  <div class="editor-header">How evaluation works</div>
+  <div style="padding:14px;font-size:13px;color:var(--muted);line-height:1.6">
+
+    <div style="margin-bottom:10px">
+      <span style="display:inline-block;width:12px;height:12px;background:rgba(99,102,241,0.5);margin-right:8px;border-radius:3px"></span>
+      <b>Matched rule</b> — rule that determined final decision
+    </div>
+
+    <div style="margin-bottom:10px">
+      <span style="display:inline-block;width:12px;height:12px;background:rgba(239,68,68,0.5);margin-right:8px;border-radius:3px"></span>
+      <b>Failed rule</b> — evaluated but did not match
+    </div>
+
+    <div style="margin-bottom:10px">
+      <span style="display:inline-block;width:12px;height:12px;background:rgba(34,197,94,0.5);margin-right:8px;border-radius:3px"></span>
+      <b>Matched condition</b> — condition evaluated to true
+    </div>
+
+    <div>
+      <span style="display:inline-block;width:12px;height:12px;background:rgba(239,68,68,0.3);margin-right:8px;border-radius:3px"></span>
+      <b>Failed condition</b> — condition evaluated to false
+    </div>
+
+  </div>
+</div>
+
+
+<!-- RESULT -->
+<div class="editor">
+  <div class="editor-header" style="display:flex;align-items:center;">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('decision')">Decision</button>
+      <button class="tab" onclick="switchTab('explain')">Explain</button>
+    </div>
+    <button class="copy-btn" style="margin-left:auto" onclick="copyResult()">Copy</button>
+  </div>
+
+  <textarea id="decision-editor"></textarea>
+  <textarea id="explain-editor" style="display:none;"></textarea>
+</div>
+
+</div>
+
+<script>
+window.onload = function () {
+
+  function createEditor(id) {
+    return CodeMirror.fromTextArea(document.getElementById(id), {
+      mode: "yaml",
+      theme: "material-darker",
+      lineNumbers: true,
+      indentUnit: 2,
+      tabSize: 2,
+      lineWrapping: true
+    });
+  };
+
+  const schemaEditor = createEditor("schema-editor");
+  const policyEditor = createEditor("policy-editor");
+  const governanceEditor = createEditor("governance-editor");
+  const payloadEditor = createEditor("payload-editor");
+
+  const decisionEditor = CodeMirror.fromTextArea(
+    document.getElementById("decision-editor"),
+    {
+      mode: "application/json",
+      theme: "material-darker",
+      lineNumbers: true,
+      readOnly: true,
+      lineWrapping: true
+    }
+  );
+
+  const explainEditor = CodeMirror.fromTextArea(
+    document.getElementById("explain-editor"),
+    {
+      mode: "application/json",
+      theme: "material-darker",
+      lineNumbers: true,
+      readOnly: true,
+      lineWrapping: true
+    }
+  );
+
+  const decisionWrapper = decisionEditor.getWrapperElement();
+  const explainWrapper = explainEditor.getWrapperElement();
+
+  decisionWrapper.style.display = "block";
+  explainWrapper.style.display = "none";
+
+  window.switchTab = function (tab) {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => t.classList.remove('active'));
+
+    if (tab === 'decision') {
+      decisionWrapper.style.display = "block";
+      explainWrapper.style.display = "none";
+      tabs[0].classList.add('active');
+      setTimeout(() => decisionEditor.refresh(), 0);
+    } else {
+      decisionWrapper.style.display = "none";
+      explainWrapper.style.display = "block";
+      tabs[1].classList.add('active');
+      setTimeout(() => explainEditor.refresh(), 0);
+    }
+  };
+
+  decisionEditor.setValue('// Click "Validate & Evaluate"');
+  explainEditor.setValue('// Explanation will appear here');
+
+  let markers = [];
+
+  function clearHighlights() {
+    markers.forEach(m => m.clear());
+    markers = [];
+  }
+
+  function highlightRules(evaluatedRules) {
+    const doc = policyEditor.getDoc();
+    const totalLines = doc.lineCount();
+
+    clearHighlights();
+
+    evaluatedRules.forEach(ruleEval => {
+      const ruleId = ruleEval.rule;
+      const isMatched = ruleEval.result === "matched";
+
+      let startLine = -1;
+
+      for (let i = 0; i < totalLines; i++) {
+        const line = doc.getLine(i);
+        if (line.includes(`id: ${ruleId}`)) {
+          startLine = i;
+          break;
+        }
+      }
+
+      if (startLine === -1) return;
+
+      let endLine = startLine;
+      for (let i = startLine + 1; i < totalLines; i++) {
+        const line = doc.getLine(i);
+        if (line.trim().startsWith("- id:") && i !== startLine) break;
+        endLine = i;
+      }
+
+      const className = isMatched
+        ? "highlight-rule-success"
+        : "highlight-rule-failed";
+
+      const marker = doc.markText(
+        { line: startLine, ch: 0 },
+        { line: endLine, ch: 100 },
+        { className }
+      );
+
+      markers.push(marker);
+
+      if (isMatched) {
+        policyEditor.scrollIntoView({ line: startLine, ch: 0 }, 100);
+      }
+    });
+  }
+
+  window.runEvaluation  = function () {
+    const payload = payloadEditor.getValue();
+
+    const evaluated_rules = [
+      {
+        rule: "no_external_email",
+        result: payload.includes("intern") ? "matched" : "failed"
+      },
+      {
+        rule: "admin_override",
+        result: payload.includes("admin") ? "matched" : "failed"
+      }
+    ];
+
+    const matched = evaluated_rules.find(r => r.result === "matched");
+
+    const decision = {
+      effect: matched ? "block" : "allow",
+      matched_rule: matched ? matched.rule : null
+    };
+
+  const explain = {
+    evaluated_rules: [
+      {
+        rule: "no_external_email",
+        result: payload.includes("intern") ? "matched" : "failed",
+        conditions: [
+          {
+            fact: "actor.role",
+            value: "intern",
+            result: payload.includes("intern") ? "matched" : "failed"
+          }
+        ]
+      },
+      {
+        rule: "admin_override",
+        result: payload.includes("admin") ? "matched" : "failed",
+        conditions: [
+          {
+            fact: "actor.role",
+            value: "admin",
+            result: payload.includes("admin") ? "matched" : "failed"
+          }
+        ]
+      }
+    ]
+  };
+
+    decisionEditor.setValue(JSON.stringify(decision, null, 2));
+    explainEditor.setValue(JSON.stringify(explain, null, 2));
+
+    highlightRules(evaluated_rules);
+    highlightConditions(explain.evaluated_rules);
+
+  };
+
+  window.copyResult = function () {
+    const decisionVisible =
+      decisionWrapper.style.display !== "none";
+
+    const text = decisionVisible
+      ? decisionEditor.getValue()
+      : explainEditor.getValue();
+
+    navigator.clipboard.writeText(text);
+  };
+
+  function highlightConditions(evaluatedRules) {
+    const doc = policyEditor.getDoc();
+    const totalLines = doc.lineCount();
+
+    evaluatedRules.forEach(ruleEval => {
+      ruleEval.conditions.forEach(cond => {
+        for (let i = 0; i < totalLines; i++) {
+          const line = doc.getLine(i);
+
+          // Match condition line
+          if (line.includes(`fact: ${cond.fact}`)) {
+            const className =
+              cond.result === "matched"
+                ? "highlight-condition-success"
+                : "highlight-condition-failed";
+
+            const marker = doc.markText(
+              { line: i, ch: 0 },
+              { line: i + 2, ch: 100 }, // cover fact + operator + value
+              { className }
+            );
+
+            markers.push(marker);
+            break;
+          }
+        }
+      });
+    });
+  }
+
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Actra – In-Process Policy Engine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.css">
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.js"></script>
+
+<style>
+:root{
+--bg:#0b0f1a;
+--panel:#121826;
+--panel-soft:#1b2336;
+--text:#e6edf7;
+--muted:#94a3b8;
+--accent:#6366f1;
+--accent2:#22d3ee;
+}
+
+*{box-sizing:border-box}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+font-family:Inter,system-ui;
+background-color:var(--bg);
+background-image:radial-gradient(circle at 20% 10%, #111827, #05070f 70%),
+                  radial-gradient(circle at 80% 30%, rgba(34, 211, 238, 0.1), transparent 30%),
+                  radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1), transparent 30%);
+color:var(--text);
+}
+
+.container{
+max-width:1150px;
+margin:auto;
+padding:24px;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+font-size:22px;
+letter-spacing:.5px;
+}
+
+nav a{
+color:var(--muted);
+margin-left:22px;
+text-decoration:none;
+font-size:14px;
+}
+
+nav a:hover{color:white}
+
+.hero{
+text-align:center;
+padding:100px 0 70px;
+}
+
+.hero h1{
+font-size:54px;
+margin-bottom:24px;
+line-height:1.2;
+background:linear-gradient(90deg, var(--accent2), var(--accent), #fff, var(--accent2));
+background-size:200% auto;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:text-gradient 10s linear infinite;
+}
+
+.hero p{
+color:var(--muted);
+font-size:18px;
+max-width:650px;
+margin:0 auto;
+}
+
+@keyframes text-gradient{
+to{background-position:200% center}
+}
+
+.buttons{
+margin-top:28px;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:16px;
+}
+
+.btn{
+display:inline-block;
+padding:12px 24px;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--accent2));
+color:white;
+font-weight:600;
+text-decoration:none;
+transition:transform .2s ease;
+}
+
+.btn.secondary{
+background:var(--panel-soft);
+}
+
+.btn:hover{
+transform:translateY(-2px);
+}
+
+.hero-visual{
+margin-top:60px;
+display:flex;
+justify-content:center;
+}
+
+.flow{
+display:flex;
+align-items:center;
+gap:20px;
+font-size:14px;
+}
+
+.node{
+  background:var(--panel);
+  padding:16px 20px;
+  border-radius:10px;
+  border:1px solid #1f2937;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+
+.node:hover{
+transform:translateY(-5px);
+box-shadow:0 8px 25px rgba(0,0,0,0.3);
+}
+
+.node.active{animation:pulse 2.5s infinite ease-in-out}
+
+.arrow{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--accent),var(--accent2));
+animation:flow 2s infinite linear;
+}
+
+@keyframes flow{
+0%{opacity:.2}
+50%{opacity:1}
+100%{opacity:.2}
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.05)}
+100%{transform:scale(1)}
+}
+
+.section{
+padding:70px 0;
+}
+
+.section h2{
+font-size:28px;
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:24px;
+}
+
+.card{
+background:var(--panel);
+border-radius:14px;
+padding:26px;
+border:1px solid #1f2937;
+transition:transform .2s ease,border-color .2s ease;
+}
+
+.card svg{
+width:32px;
+height:32px;
+margin-bottom:16px;
+color:var(--accent2);
+opacity:.9;
+}
+
+.card:hover{transform:translateY(-4px);border-color:var(--accent)}
+
+.card h3{
+margin-top:0;
+font-size:18px;
+}
+
+.card p{
+color:var(--muted);
+font-size:14px;
+}
+
+.example-grid, .install-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+
+.code-editor{
+  background:var(--panel);
+  border-radius:14px;
+  border:1px solid #1f293b;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.code-editor-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--panel-soft);
+  padding:12px 26px;
+  font-size:14px;
+  font-weight:500;
+  color:var(--muted);
+  border-bottom:1px solid #1f293b;
+}
+
+.copy-btn{
+margin-left:auto;
+background:var(--panel);
+border:1px solid #1f293b;
+color:var(--muted);
+padding:4px 12px;
+border-radius:6px;
+cursor:pointer;
+font-size:12px;
+}
+.copy-btn:hover{background:#1f293b;color:var(--text)}
+
+.code-editor-body{
+  padding:26px;
+  overflow:auto;
+  font-size:14px;
+  font-family:"JetBrains Mono",monospace;
+  background:#020617;
+  flex-grow:1;
+}
+
+.code-editor-body pre{
+  margin:0;
+}
+
+/* The syntax highlighting was scoped to .code-block, let's scope it to the body */
+.code-editor-body .token.keyword{color:#c792ea}
+.code-editor-body .token.string{color:#c3e88d}
+.code-editor-body .token.function{color:#82aaff}
+.code-editor-body .token.property{color:#f07178}
+.code-editor-body .token.punctuation{color:#89ddff}
+.code-editor-body .token.operator{color:#89ddff}
+.code-editor-body .token.number{color:#f78c6c}
+.code-editor-body .token.comment{color:#546e7a}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  nav a {
+    margin-left: 0;
+  }
+  .hero {
+    padding: 60px 0 40px;
+  }
+  .hero h1 {
+    font-size: 38px;
+  }
+  .hero p {
+    font-size: 16px;
+  }
+  .example-grid, .install-grid {
+    grid-template-columns: 1fr;
+  }
+  .flow {
+    flex-direction: column;
+  }
+  .arrow {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+  }
+}
+
+.scroller{
+max-width:100%;
+overflow:hidden;
+-webkit-mask-image:linear-gradient(to right,transparent,white 20%,white 80%,transparent);
+mask-image:linear-gradient(to right,transparent,white 20%,white 80%,transparent);
+}
+
+.scroller-inner{
+display:flex;
+gap:40px;
+width:max-content;
+flex-wrap:nowrap;
+}
+
+.scroller[data-animated="true"] .scroller-inner{
+animation:scroll 40s linear infinite;
+}
+
+.logo-item{
+display:flex;
+align-items:center;
+gap:12px;
+color:var(--muted);
+font-size:14px;
+font-weight:500;
+}
+
+.logo-item svg{
+width:24px;
+height:24px;
+opacity:.8;
+}
+
+@keyframes scroll{
+to{
+transform:translate(calc(-50% - 20px));
+}
+}
+
+footer{
+margin-top:80px;
+padding:40px 0;
+text-align:center;
+color:#64748b;
+font-size:14px;
+}
+
+.actra-col {
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+
+.code-editor {
+  border-radius: 14px;
+  border: 1px solid #1f2937;
+  overflow: hidden;
+}
+
+.code-editor-header {
+  background: #0f172a;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 1px solid #1f2937;
+}
+
+.CodeMirror {
+  height: auto;
+  min-height: 220px;
+  font-size: 13px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+table td, table th {
+  text-align: left !important;
+  vertical-align: top;
+}
+
+.CodeMirror {
+  text-align: left !important;
+}
+
+pre {
+  text-align: left;
+}
+
+.code-editor-header {
+  text-align: left;
+}
+
+.section h2,
+.section p {
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  transition: 0.2s ease;
+}
+
+.section {
+  padding: 80px 0;
+}
+
+.section h2 {
+  margin-bottom: 20px;
+}
+
+.editor-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.red { background: #ef4444; }
+.dot.yellow { background: #eab308; }
+.dot.green { background: #22c55e; }
+
+table td {
+  padding: 14px 12px;
+}
+
+/* Old styles for tabs and code-blocks are removed below */
+.tabs, .tab-list, .tab-item, .tab-panel, .code-block, .install-grid h4 {
+  /* These styles are no longer needed and have been replaced. */
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+<div class="logo">
+<svg width="26" height="26" viewBox="0 0 100 100">
+  <circle cx="50" cy="20" r="8" fill="#22d3ee"/>
+  <circle cx="20" cy="75" r="8" fill="#6366f1"/>
+  <circle cx="80" cy="75" r="8" fill="#6366f1"/>
+  <line x1="50" y1="28" x2="20" y2="67" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="50" y1="28" x2="80" y2="67" stroke="#94a3b8" stroke-width="3"/>
+</svg>
+<span>Actra</span>
+</div>
+
+<nav>
+<a href="#value-props">Why</a>
+<a href="#examples">Example</a>
+<a href="#get-started">Docs</a>
+<a href="https://github.com/getactra/actra">GitHub</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+
+<h1>Policy engine for <br>agents and applications</h1>
+<p>
+Actra is a lightweight, embeddable policy engine for edge, AI agents, and applications.
+No servers. No latency. Just deterministic decisions.
+</p>
+
+<p style="text-align:center;color:var(--muted);font-size:13px;margin-top:10px">
+Open-source • Lightweight • Production-ready
+</p>
+
+</section>
+
+<section class="section" style="text-align:center">
+<h2>Start using Actra in minutes</h2>
+
+<div class="buttons">
+  <a class="btn" href="https://github.com/getactra/actra">Get Started</a>
+  <a class="btn secondary" href="https://github.com/getactra/actra">GitHub</a>
+  <a class="btn secondary" href="#playground">Playground</a>
+</div>
+</section>
+
+<section class="section" id="environments">
+
+<h2>Works Everywhere You Do</h2>
+
+<div class="scroller">
+  <div class="scroller-inner">
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12.23 15.86l-3.31-3.28v-4.44h6.58v2.13h-4.28l2.7 2.68c.62.62.62 1.63 0 2.25-.62.62-1.63.62-2.25 0z"/><path fill="#ffd000" d="M11.77 8.14l3.31 3.28v4.44H8.5v-2.13h4.28l-2.7-2.68c-.62-.62-.62-1.63 0-2.25.62-.62 1.63-.62 2.25 0z"/></svg>Python</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208.1 128.1a12 12 0 0 1-11.9-12.8l8-80a12 12 0 1 1 24 2.4l-8 80a12 12 0 0 1-12.1 10.4Z"/><path fill="currentColor" d="M128 216a88 88 0 0 1-88-88c0-41.5 28.9-76.1 67.9-85.5a12 12 0 1 1 8.2 22.9A64.1 64.1 0 0 0 64 128a64 64 0 0 0 128 0c0-31.1-22.3-57.2-52.1-62.5a12 12 0 1 1 8.2-22.9C187.1 51.9 216 86.5 216 128a88 88 0 0 1-88 88Z"/></svg>Node.js</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M208.1 128.1a12 12 0 0 1-11.9-12.8l8-80a12 12 0 1 1 24 2.4l-8 80a12 12 0 0 1-12.1 10.4Z"/><path fill="currentColor" d="M128 216a88 88 0 0 1-88-88c0-41.5 28.9-76.1 67.9-85.5a12 12 0 1 1 8.2 22.9A64.1 64.1 0 0 0 64 128a64 64 0 0 0 128 0c0-31.1-22.3-57.2-52.1-62.5a12 12 0 1 1 8.2-22.9C187.1 51.9 216 86.5 216 128a88 88 0 0 1-88 88Z"/></svg>Bun</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.1 4.9C15.2 1 8.8 1 4.9 4.9S1 15.2 4.9 19.1s10.2 3.9 14.1 0l-1.4-1.4c-3.1 3.1-8.2 3.1-11.3 0s-3.1-8.2 0-11.3S14.5 3.2 17.7 6.3l-3.8 3.8h8.9V1.2l-3.7 3.7z"/></svg>Cloudflare Workers</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 1.515a3 3 0 0 0-3 0L3 5.25v13.5l7.5 3.75l7.5-3.75V5.25L13.5 1.515zM12 3.23l5.5 2.75l-5.5 2.75l-5.5-2.75L12 3.23zM4.5 6.465l5.5 2.75v10.158l-5.5-2.75V6.465zm15 7.393l-5.5 2.75v-10.16l5.5-2.75v10.16z"/></svg>AWS Lambda</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93c0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41c0 2.08-.8 3.97-2.1 5.39z"/></svg>Web Browsers</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2zm6.02 14.335l-4.31 2.933a.5.5 0 0 1-.71-.448V4.18a.5.5 0 0 1 .71-.448l4.31 2.933a.5.5 0 0 1 0 .895zM9.98 9.665l-4.31 2.933a.5.5 0 0 1 0 .895l4.31 2.933a.5.5 0 0 1 .71-.448V9.217a.5.5 0 0 1-.71.448z"/></svg>Deno</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0L1.53 5.25v13.5L12 24l10.47-5.25V5.25L12 0zm-1.47 19.5l-5.25-2.625v-3.3L8.91 15l-2.625-1.313V10.5L10.53 9v3.3L12 13.125l1.47-.825V9l4.215 1.5v3.188L15.09 15l3.63 1.575v3.3L13.47 19.5V16.2l-1.47.825l-1.47-.825v3.3zM12 7.875L5.25 4.5l6.75-3.375l6.75 3.375L12 7.875z"/></svg>Fastly</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 0l12 21.6H0L12 0z"/></svg>Vercel</div>
+    <div class="logo-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.688 16.551c-2.11-3.654-4.22-7.308-6.33-10.962c-.3-.52-.634-.52-.934 0C10.213 9.243 8.103 12.897 5.993 16.55c-.3.52 0 .865.52.865h12.65c.52 0 .82-.346.525-.864z"/></svg>Netlify</div>
+  </div>
+</div>
+
+</section>
+
+<!--WHY-->
+<section class="section">
+
+<h2>Why Actra ?</h2>
+
+<p style="text-align:center;color:var(--muted);max-width:650px;margin:0 auto 30px">
+Actra is built for modern systems where decisions must be fast, local, and controllable.
+</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>⚡ Zero infrastructure</h3>
+<p>No sidecars. No services. Policies run directly inside your application.</p>
+</div>
+
+<div class="card">
+<h3>🌍 Runs everywhere</h3>
+<p>Node, Bun, Deno, browser, and edge — one engine across all runtimes.</p>
+</div>
+
+<div class="card">
+<h3>🤖 Built for agents</h3>
+<p>Control actions, tools, and workflows in real-time.</p>
+</div>
+
+<div class="card">
+<h3>🧠 Deterministic by design</h3>
+<p>Same input always produces the same decision across environments.</p>
+</div>
+
+</div>
+
+</section>
+
+<!--WHY NOW-->
+
+<section class="section">
+<h2>Why now?</h2>
+<p style="text-align:center;color:var(--muted);max-width:600px;margin:auto">
+AI systems are no longer passive — they act.<br/>
+Policy must execute at the point of action, not behind infrastructure.
+</p>
+</section>
+
+<!-- EXAMPLE -->
+<section class="section">
+<h2>See it in action</h2>
+<p style="text-align:center;color:var(--muted);max-width:600px;margin:auto">
+Evaluate policies in real-time with a simple API.
+</p>
+  <div class="example-grid">
+  <div class="code-editor">
+    <div class="code-editor-header">example.js</div>
+    <textarea id="js-editor"></textarea>
+  </div>
+
+  <div class="code-editor">
+    <div class="code-editor-header">example.py</div>
+    <textarea id="py-editor"></textarea>
+  </div>
+</div>
+<div style="text-align:center;margin-top:24px">
+  <a href="/playground" class="btn">
+    Run in Playground →
+  </a>
+</div>
+</section>
+
+<!--ARCHITECTURE-->
+<section class="section">
+<h2>Request flow</h2>
+<div style="margin-bottom:40px">
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+
+    <!-- TRADITIONAL -->
+    <div class="card" style="text-align:center">
+
+      <h4 style="color:#ef4444;margin-bottom:18px">Traditional</h4>
+
+      <div class="flow" style="opacity:0.85">
+
+        <div class="node">App</div>
+
+        <div class="arrow"></div>
+
+        <div class="node bad-node">Network</div>
+
+        <div class="arrow"></div>
+
+        <div class="node bad-node">Policy</div>
+
+        <div class="arrow"></div>
+
+        <div class="node">Decision</div>
+
+      </div>
+
+      <div style="margin-top:16px;font-size:12px;color:#ef4444">
+        + Network latency • + Infrastructure • + Failure points
+      </div>
+
+    </div>
+
+    <!-- ACTRA -->
+    <div class="card" style="text-align:center;border:1px solid var(--accent);box-shadow:0 0 25px rgba(99,102,241,0.15)">
+
+      <h4 style="color:var(--accent);margin-bottom:18px">Actra (In-process)</h4>
+
+      <div class="flow">
+
+        <div class="node">App</div>
+
+        <div class="arrow"></div>
+
+        <div class="node active">Actra</div>
+
+        <div class="arrow"></div>
+
+        <div class="node success-node">Decision ⚡</div>
+
+      </div>
+
+      <div style="margin-top:16px;font-size:12px;color:var(--accent)">
+        Zero latency • No infrastructure • Deterministic
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<!-----COMPARISON----->
+<section class="section">
+
+<h2 style="text-align:center">Built for how modern systems actually run</h2>
+
+<div style="
+  display:inline-block;
+  padding:6px 12px;
+  border:1px solid var(--accent);
+  border-radius:20px;
+  font-size:11px;
+  color:var(--accent);
+  margin-bottom:12px;
+  text-align:center;
+">
+  Agent-native policy engine
+</div>
+
+<p style="text-align:center;color:var(--muted);max-width:720px;margin:0 auto 30px">
+Most policy engines run as infrastructure.  
+Actra runs inside your application — eliminating latency and external dependencies.
+</p>
+
+<div class="card" style="overflow:auto">
+
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+
+<thead>
+<tr style="text-align:left;border-bottom:1px solid #1f2937">
+<th style="padding:12px">Core Capability</th>
+<th class="actra-col">Actra</th>
+<th style="color:var(--muted)">OPA</th>
+<th style="color:var(--muted)">Cedar</th>
+</tr>
+</thead>
+
+<tbody>
+<!--DESIGNED FOR-->
+<tr style="background:rgba(99,102,241,0.06);border-bottom:1px solid #1f2937">
+
+  <td style="padding:12px;color:var(--muted);font-size:12px;font-weight:600">
+    🧭 Designed for
+  </td>
+
+  <td class="actra-col" style="padding:12px;font-size:13px">
+    <strong>AI agents & apps</strong><br/>
+    <span style="font-size:11px;color:var(--muted)">
+      Runtime decision control
+    </span>
+  </td>
+
+  <td style="padding:12px;font-size:13px">
+    Infrastructure policies
+  </td>
+
+  <td style="padding:12px;font-size:13px">
+    Cloud authorization
+  </td>
+
+</tr>
+
+<!-- CORE -->
+<tr class="row">
+<td>⚙️ Execution model</td>
+<td class="actra-col good">🟢 In-process</td>
+<td class="bad">🔴 External</td>
+<td class="bad">🔴 External</td>
+</tr>
+
+<tr class="row">
+<td>🌐 Network dependency</td>
+<td class="actra-col good">🟢 None</td>
+<td class="bad">🔴 Required</td>
+<td class="bad">🔴 Required</td>
+</tr>
+
+<tr class="row">
+<td>⚡ Decision latency</td>
+<td class="actra-col good">🟢 Zero</td>
+<td class="bad">🔴 Network-bound</td>
+<td class="bad">🔴 Network-bound</td>
+</tr>
+
+<tr class="row">
+<td>🌍 Edge / browser</td>
+<td class="actra-col good">🟢 Native</td>
+<td class="neutral">🟡 Limited</td>
+<td class="bad">🔴 No</td>
+</tr>
+
+<tr class="row">
+<td>🧠 Determinism</td>
+<td class="actra-col good">🟢 Deterministic</td>
+<td class="neutral">🟡 Partial</td>
+<td class="good">🟢 Deterministic</td>
+</tr>
+
+<!-- GROUP HEADER -->
+<tr>
+  <td colspan="4" style="
+    text-align:center;
+    padding:16px 12px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.5px;
+    color:var(--accent);
+    background:rgba(99,102,241,0.08);
+    border-top:1px solid #1f2937;
+    border-bottom:1px solid #1f2937;
+  ">
+    🤖 AI / Agent Capabilities
+  </td>
+</tr>
+
+<!-- AGENT BLOCK -->
+<tr class="row">
+<td>🤖 Agent / MCP support</td>
+<td class="actra-col good">🟢 Native (Agents / MCP)</td>
+<td class="bad">🔴 No</td>
+<td class="bad">🔴 No</td>
+</tr>
+
+<tr class="row">
+<td>⚡ Action-level enforcement</td>
+<td class="actra-col good">🟢 Native</td>
+<td class="bad">🔴 No</td>
+<td class="bad">🔴 No</td>
+</tr>
+
+<tr class="row">
+<td>🔧 Tool / API control</td>
+<td class="actra-col good">🟢 Native</td>
+<td class="bad">🔴 No</td>
+<td class="bad">🔴 No</td>
+</tr>
+
+<tr class="row">
+<td>⏱ Runtime evaluation</td>
+<td class="actra-col good">🟢 Real-time</td>
+<td class="neutral">🟡 Limited</td>
+<td class="neutral">🟡 Limited</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<p style="text-align:center;color:var(--muted);font-size:13px;margin-top:12px">
+Actra enables real-time control over agent actions, tools, and workflows.
+</p>
+
+</div>
+
+</section>
+
+<!-- INSTALL -->
+<section class="section" id="get-started">
+
+<h2>Get started in seconds</h2>
+
+<p style="text-align:center;color:var(--muted);max-width:600px;margin:0 auto 30px">
+Install Actra and start evaluating policies locally — no setup required.
+</p>
+
+<div class="install-grid">
+
+<!-- JS -->
+<div class="code-editor">
+
+  <div class="code-editor-header">
+    <div class="editor-controls">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+
+    <span class="file-name">terminal</span>
+
+    <button class="copy-btn">Copy</button>
+  </div>
+
+  <div class="code-editor-body">
+    <pre><code>$ npm install actra</code></pre>
+  </div>
+
+</div>
+
+<!-- PYTHON -->
+<div class="code-editor">
+
+  <div class="code-editor-header">
+    <div class="editor-controls">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+
+    <span class="file-name">terminal</span>
+
+    <button class="copy-btn">Copy</button>
+  </div>
+
+  <div class="code-editor-body">
+    <pre><code>$ pip install actra</code></pre>
+  </div>
+
+</div>
+
+</div>
+
+<!-- CTA -->
+<div style="text-align:center;margin-top:24px">
+  <a href="/playground" class="btn">
+    Try it in Playground →
+  </a>
+</div>
+
+</section>
+
+<!-- USE CASES -->
+<section class="section">
+<h2>Use Cases</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>🤖 AI Agent Guardrails</h3>
+<p>Define what agents are allowed to do — tools, APIs, and sensitive actions.</p>
+</div>
+
+<div class="card">
+<h3>🔐 Application Authorization</h3>
+<p>Replace hardcoded authorization logic with declarative policies.</p>
+</div>
+
+<div class="card">
+<h3>⚡ Edge Enforcement</h3>
+<p>Evaluate decisions at the edge without network calls.</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="section">
+<h2>Philosophy</h2>
+
+<p style="text-align:center;color:var(--muted);max-width:700px;margin:auto;font-size:18px">
+Policy should not live in infrastructure.<br/>
+It should execute where decisions are made.
+</p>
+
+</section>
+
+<footer>
+&copy; 2026 Actra • In-Process Policy Engine
+</footer>
+
+</div>
+
+<script>
+// copy button
+document.querySelectorAll('.copy-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const code = button.closest('.code-editor').querySelector('pre').innerText;
+    navigator.clipboard.writeText(code);
+    button.textContent = 'Copied!';
+    setTimeout(() => button.textContent = 'Copy', 2000);
+  });
+});
+
+const jsEditor = CodeMirror.fromTextArea(
+  document.getElementById("js-editor"),
+  {
+    mode: "javascript",
+    theme: "material-darker",
+    lineNumbers: true,
+    readOnly: true,
+    lineWrapping: true
+  }
+);
+
+jsEditor.setValue(`const actra = await Actra.create({
+  schema,
+  policy
+})
+
+const decision = await actra.evaluate({
+  action: { type: "send_email" },
+  actor: { role: "intern" }
+})
+
+// → { effect: "block", matched_rule: "no_external_email" }`);
+
+
+const pyEditor = CodeMirror.fromTextArea(
+  document.getElementById("py-editor"),
+  {
+    mode: "python",
+    theme: "material-darker",
+    lineNumbers: true,
+    readOnly: true,
+    lineWrapping: true
+  }
+);
+
+pyEditor.setValue(`from actra import Actra
+
+actra = Actra.create(schema, policy)
+
+decision = actra.evaluate({
+  "action": {"type": "send_email"},
+  "actor": {"role": "intern"}
+})
+
+# → {"effect": "block", "matched_rule": "no_external_email"}`);
+
+// --- Scrolling Logos ---
+  const scrollers = document.querySelectorAll(".scroller");
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    addAnimation();
+  }
+
+  function addAnimation() {
+    scrollers.forEach((scroller) => {
+      scroller.setAttribute("data-animated", true);
+      const scrollerInner = scroller.querySelector(".scroller-inner");
+      const scrollerContent = Array.from(scrollerInner.children);
+
+      scrollerContent.forEach((item) => {
+        const duplicatedItem = item.cloneNode(true);
+        duplicatedItem.setAttribute("aria-hidden", true);
+        scrollerInner.appendChild(duplicatedItem);
+      });
+    });
+  }
+
+</script>
+
+
+</body>
+</html>
