@@ -73,12 +73,12 @@ nav a:hover{color:white}
 
 .hero{
 text-align:center;
-padding:100px 0 70px;
+padding:70px 0 30px;
 }
 
 .hero h1{
-font-size:54px;
-margin-bottom:24px;
+font-size:48px;
+margin-bottom:16px;
 line-height:1.2;
 background:linear-gradient(90deg, var(--accent2), var(--accent), #fff, var(--accent2));
 background-size:200% auto;
@@ -92,6 +92,7 @@ color:var(--muted);
 font-size:18px;
 max-width:650px;
 margin:0 auto;
+margin-bottom: 10px;
 }
 
 @keyframes text-gradient{
@@ -417,7 +418,12 @@ pre {
 }
 
 .section {
-  padding: 80px 0;
+  padding: 60px 0;
+}
+
+/* tighter spacing between consecutive sections */
+.section + .section {
+  padding-top: 30px;
 }
 
 .section h2 {
@@ -441,6 +447,58 @@ pre {
 
 table td {
   padding: 14px 12px;
+}
+
+/*Hero Animation*/
+.hero h1,
+.hero p,
+.buttons {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.hero p {
+  animation-delay: 0.1s;
+}
+
+.buttons {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*CTA Glow*/
+.btn {
+  position: relative;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  opacity: 0;
+  filter: blur(10px);
+  z-index: -1;
+  transition: 0.3s;
+}
+
+.btn:hover::after {
+  opacity: 0.6;
+}
+
+/*Code Editor Animation*/
+.code-editor {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease forwards;
 }
 
 /* Old styles for tabs and code-blocks are removed below */
@@ -482,13 +540,13 @@ Actra is a lightweight, embeddable policy engine for edge, AI agents, and applic
 No servers. No latency. Just deterministic decisions.
 </p>
 
-<p style="text-align:center;color:var(--muted);font-size:13px;margin-top:10px">
+<p style="text-align:center;color:var(--muted);font-size:13px;margin-top:6px">
 Open-source • Lightweight • Production-ready
 </p>
 
 </section>
 
-<section class="section" style="text-align:center">
+<section class="section compact" style="text-align:center">
 <h2>Start using Actra in minutes</h2>
 
 <div class="buttons">
@@ -992,6 +1050,25 @@ decision = actra.evaluate({
       });
     });
   }
+
+  /*Section reveal on scroll*/
+  const sections = document.querySelectorAll('.section');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = 1;
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+sections.forEach(section => {
+  section.style.opacity = 0;
+  section.style.transform = 'translateY(10px)';
+  section.style.transition = '0.5s ease';
+  observer.observe(section);
+});
 
 </script>
 
