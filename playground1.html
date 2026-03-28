@@ -199,10 +199,21 @@
       <div class="editor">
         <div class="editor-header">Schema YAML</div>
         <textarea id="schema-editor">
+version: 1
+
+actions:
+  refund:
+    fields:
+      amount: number
+
 actor:
-  role: string
-action:
-  type: string
+  fields:
+    role: string
+
+snapshot:
+  fields:
+    fraud_flag: boolean
+
 </textarea>
       </div>
 
@@ -210,25 +221,20 @@ action:
       <div class="editor">
         <div class="editor-header">Policy YAML</div>
         <textarea id="policy-editor">
-actions:
-  - send_email
+version: 1
 
 rules:
-  - id: no_external_email
+  - id: block_large_refund
+    scope:
+      action: refund
+    when:
+      subject:
+        domain: action
+        field: amount
+      operator: greater_than
+      value:
+        literal: 1000
     effect: block
-    condition:
-      all:
-        - fact: actor.role
-          operator: equal
-          value: "intern"
-
-  - id: admin_override
-    effect: allow
-    condition:
-      all:
-        - fact: actor.role
-          operator: equal
-          value: "admin"
 </textarea>
       </div>
 
@@ -236,8 +242,8 @@ rules:
       <div class="editor">
         <div class="editor-header">Governance YAML</div>
         <textarea id="governance-editor">
-mode: strict
-</textarea>
+
+        </textarea>
       </div>
 
       <!-- Payload -->
@@ -249,7 +255,8 @@ actor:
   role: intern        # who is performing action
 
 action:
-  type: send_email    # what is being attempted
+  type: refund
+  amount: 5000  # what is being attempted
 
 snapshot:
   # optional contextual data about environment/resource
