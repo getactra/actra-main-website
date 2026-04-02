@@ -1,0 +1,32 @@
+Actra
+
+Actra is an agentic governance and runtime policy engine for AI agents, APIs, and workflows.
+
+It allows developers to define and enforce policies that control what actions AI systems can take before execution.
+
+Core capabilities:
+- Runtime policy evaluation
+- AI agent guardrails
+- Tool and API access control
+- Deterministic enforcement
+
+Actra can be used:
+- As an in-process SDK
+- As an external MCP proxy for zero-code enforcement
+
+Key concepts:
+- Agentic governance
+- Runtime enforcement
+- AI safety and control
+
+Documentation:
+https://docs.actra.dev
+
+GitHub:
+https://github.com/getactra/actra
+
+Key pages:
+https://actra.dev/agentic-governance
+https://actra.dev/ai-agent-guardrails
+https://actra.dev/opa-vs-actra
+https://actra.dev/runtime-policy-engine

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://actra.dev/</loc>
+  </url>
+
+  <url>
+    <loc>https://actra.dev/agentic-governance</loc>
+  </url>
+
+  <url>
+    <loc>https://actra.dev/ai-agent-guardrails</loc>
+  </url>
+
+  <url>
+    <loc>https://actra.dev/opa-vs-actra</loc>
+  </url>
+
+  <url>
+    <loc>https://actra.dev/runtime-policy-engine</loc>
+  </url>
+
+</urlset>

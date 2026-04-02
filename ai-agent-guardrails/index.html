@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="What is agentic governance? Learn how to control AI agent actions, tools and workflows at runtime." />
+  <title>AI Agent Guardrails | Actra</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <header>
+      <div class="logo">
+        <svg width="26" height="26" viewBox="0 0 100 100">
+          <circle cx="50" cy="20" r="8" fill="#22d3ee" />
+          <circle cx="20" cy="75" r="8" fill="#6366f1" />
+          <circle cx="80" cy="75" r="8" fill="#6366f1" />
+          <line x1="50" y1="28" x2="20" y2="67" stroke="#94a3b8" stroke-width="3" />
+          <line x1="50" y1="28" x2="80" y2="67" stroke="#94a3b8" stroke-width="3" />
+        </svg>
+        <a href="/" style="color:inherit;text-decoration:none;">Actra</a>
+      </div>
+
+      <nav>
+
+        <!-- CATEGORY -->
+        <a href="agentic-governance">Agentic Governance</a>
+
+        <!-- USE CASE -->
+        <a href="ai-agent-guardrails">Guardrails</a>
+
+        <!-- COMPARISON -->
+        <a href="opa-vs-actra">OPA Alternative</a>
+
+        <!-- TECH -->
+        <a href="runtime-policy-engine">Runtime</a>
+
+        <!-- DOCS -->
+        <a href="https://docs.actra.dev">Docs</a>
+
+        <!-- GITHUB -->
+        <a href="https://github.com/getactra/actra">GitHub</a>
+
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:12px">
+
+        <!-- PRIMARY CTA -->
+        <a class="btn" href="playground" style="padding:8px 16px;font-size:13px">
+          Playground
+        </a>
+
+        <!-- THEME TOGGLE -->
+        <button id="themeToggle" style="
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid var(--panel-soft);
+      background:var(--panel);
+      color:var(--text);
+      cursor:pointer;
+      font-size:12px;
+    ">
+          🌙 Dark
+        </button>
+
+      </div>
+    </header>
+
+
+    <section class="hero">
+      <h1>AI Agent Guardrails</h1>
+      <p>Define what agents are allowed to do - before execution</p>
+      <p style="color:var(--muted);font-size:14px">
+        Control tools, APIs and actions in real time.
+      </p>
+    </section>
+
+    <!-- WHY GUARDRAILS -->
+    <section class="section">
+      <h2>Why AI Agent Guardrails Matter</h2>
+
+      <p style="max-width:720px;margin:auto;color:var(--muted);line-height:1.7">
+        AI agents are no longer passive - they take actions.
+        They call tools, execute workflows and interact with real systems.
+        <br /><br />
+        Without guardrails, agents can perform unsafe operations,
+        expose sensitive data or trigger unintended behavior.
+        <br /><br />
+        Guardrails ensure every action is evaluated <strong>before execution</strong>.
+      </p>
+    </section>
+
+    <!-- VISUAL CARDS -->
+    <section class="section">
+      <div class="grid">
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">🤖</div>
+          <h3>Agents act autonomously</h3>
+          <p>LLMs can now execute tools and workflows.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">⚠️</div>
+          <h3>Risk increases</h3>
+          <p>Uncontrolled actions can lead to data leaks or failures.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">🛡️</div>
+          <h3>Guardrails prevent issues</h3>
+          <p>Control behavior before actions execute.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WHAT TO CONTROL -->
+    <section class="section">
+      <h2>What Guardrails Control</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">🔧</div>
+          <h3>Tools</h3>
+          <p>Limit which tools agents can access and under what conditions.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">🌐</div>
+          <h3>APIs</h3>
+          <p>Restrict access to external systems and sensitive endpoints.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">⚡</div>
+          <h3>Actions</h3>
+          <p>Allow or block critical operations before execution.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">🔁</div>
+          <h3>Workflows</h3>
+          <p>Control how multi-step processes are executed.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section">
+      <h2>How Guardrails Work</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">1️⃣</div>
+          <h3>Define rules</h3>
+          <p>Specify what actions are allowed or blocked.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">2️⃣</div>
+          <h3>Evaluate at runtime</h3>
+          <p>Check every action before execution.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">3️⃣</div>
+          <h3>Enforce decisions</h3>
+          <p>Allow or block actions instantly.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ACTRA POSITIONING -->
+    <section class="section">
+      <h2>How Actra Enables AI Agent Guardrails</h2>
+
+      <p style="max-width:720px;margin:auto;color:var(--muted);line-height:1.7">
+        Actra enforces guardrails at runtime - before actions execute.
+        <br /><br />
+        It evaluates policies inside your application <!--or via MCP proxy-->,
+        ensuring deterministic and real-time control over AI agents.
+        <br /><br />
+        This allows you to safely deploy agents with full control over tools,
+        APIs and workflows.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="text-align:center">
+      <h2>Start building safe AI agents</h2>
+
+      <div class="buttons">
+        <a class="btn" href="/playground">Try Playground</a>
+        <a class="btn" href="https://docs.actra.dev">Read Docs</a>
+      </div>
+    </section>
+
+    <!-- INTERNAL LINKS -->
+    <section class="section">
+      <h2>Explore More</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">🧠</div>
+          <h3>Agentic Governance</h3>
+          <p>Understand the broader control model for AI systems.</p>
+          <a href="/agentic-governance">Learn more →</a>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">⚔️</div>
+          <h3>OPA Alternative</h3>
+          <p>Compare Actra with traditional policy engines.</p>
+          <a href="/opa-vs-actra">Compare →</a>
+        </div>
+
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:10px">⚡</div>
+          <h3>Runtime Policy Engine</h3>
+          <p>Learn how runtime enforcement works.</p>
+          <a href="/runtime-policy-engine">Learn more →</a>
+        </div>
+
+      </div>
+    </section>
+
+
+
+    <footer style="margin-top:80px;padding:50px 0 30px;border-top:1px solid #1f2937">
+
+      <div style="
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap:30px;
+    max-width:1150px;
+    margin:auto;
+    padding:0 24px;
+  ">
+
+        <!-- BRAND -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Actra</div>
+          <p style="color:var(--muted);font-size:13px;line-height:1.6">
+            Agentic governance layer for AI agents, APIs and workflows.
+            Enforce policies at runtime with zero latency.
+          </p>
+        </div>
+
+        <!-- PLATFORM -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">PLATFORM</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="agentic-governance">Agentic Governance</a>
+            <a href="runtime-policy-engine">Runtime Policy Engine</a>
+            <a href="ai-agent-guardrails">AI Agent Guardrails</a>
+          </div>
+        </div>
+
+        <!-- COMPARE -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Compare</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="opa-vs-actra">OPA Alternative</a>
+          </div>
+        </div>
+
+        <!-- DEVELOPERS -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Developers</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="https://docs.actra.dev">Documentation</a>
+            <a href="https://github.com/getactra/actra">GitHub</a>
+            <a href="playground">Playground</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM -->
+      <div style="
+    margin-top:40px;
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+  ">
+        © 2026 Actra • AI Agent Governance & In-Process Policy Engine
+      </div>
+
+    </footer>
+
+
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById("themeToggle");
+
+    // load saved theme
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.add("light");
+      toggleBtn.textContent = "☀️ Light";
+    }
+
+    // toggle click
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+
+      const isLight = document.body.classList.contains("light");
+
+      toggleBtn.textContent = isLight ? "☀️ Light" : "🌙 Dark";
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    });
+  </script>
+</body>
+
+</html>

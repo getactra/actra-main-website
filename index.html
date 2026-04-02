@@ -4,7 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Actra – In-Process Policy Engine for AI Agents, APIs & Workflows</title>
+  <meta name="description"
+    content="Actra is an in-process policy engine for AI agents, APIs and workflows. Enforce agent guardrails, control actions and implement agentic governance with zero latency." />
+  <title>Actra - AI Agent Governance, Guardrails & In-Process Policy Engine</title>
+  <base href="/" />
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
@@ -16,624 +20,17 @@
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.js"></script>
 
-  <style>
-    :root {
-      --bg: #0b0f1a;
-      --panel: #121826;
-      --panel-soft: #1b2336;
-      --text: #e6edf7;
-      --muted: #94a3b8;
-      --accent: #6366f1;
-      --accent2: #22d3ee;
-    }
-
-    /* Light theme */
-    body.light {
-      --bg: #f8fafc;
-      --panel: #ffffff;
-      --panel-soft: #eef2ff;
-      --text: #0f172a;
-      --muted: #475569;
-      --accent: #4f46e5;
-      --accent2: #06b6d4;
-
-      background-color: var(--bg);
-      background-image: none;
-    }
-
-    body.light .hero h1 {
-      background: linear-gradient(90deg,
-          #0f172a,
-          #4f46e5,
-          #06b6d4,
-          #0f172a);
-      background-size: 200% auto;
-
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-
-      animation: text-gradient 8s linear infinite;
-    }
-
-    * {
-      box-sizing: border-box
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, system-ui;
-      background-color: var(--bg);
-      background-image: radial-gradient(circle at 20% 10%, #111827, #05070f 70%),
-        radial-gradient(circle at 80% 30%, rgba(34, 211, 238, 0.1), transparent 30%),
-        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1), transparent 30%);
-      color: var(--text);
-    }
-
-    .container {
-      max-width: 1150px;
-      margin: auto;
-      padding: 24px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 22px;
-      letter-spacing: .5px;
-    }
-
-    nav a {
-      color: var(--muted);
-      margin-left: 22px;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    nav a:hover {
-      color: white
-    }
-
-    .hero {
-      text-align: center;
-      padding: 70px 0 30px;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 16px;
-      line-height: 1.2;
-      background: linear-gradient(90deg, var(--accent2), var(--accent), #fff, var(--accent2));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: text-gradient 10s linear infinite;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 18px;
-      max-width: 650px;
-      margin: 0 auto;
-      margin-bottom: 10px;
-    }
-
-    @keyframes text-gradient {
-      to {
-        background-position: 200% center
-      }
-    }
-
-    .buttons {
-      margin-top: 28px;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform .2s ease;
-    }
-
-    .btn.secondary {
-      background: var(--panel-soft);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .hero-visual {
-      margin-top: 60px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .flow {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-size: 14px;
-    }
-
-    .node {
-      background: var(--panel);
-      padding: 16px 20px;
-      border-radius: 10px;
-      border: 1px solid #1f2937;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: transform .3s ease, box-shadow .3s ease;
-    }
-
-    .node:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-
-    .node.active {
-      animation: pulse 2.5s infinite ease-in-out
-    }
-
-    .arrow {
-      width: 40px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      animation: flow 2s infinite linear;
-    }
-
-    @keyframes flow {
-      0% {
-        opacity: .2
-      }
-
-      50% {
-        opacity: 1
-      }
-
-      100% {
-        opacity: .2
-      }
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1)
-      }
-
-      50% {
-        transform: scale(1.05)
-      }
-
-      100% {
-        transform: scale(1)
-      }
-    }
-
-    .section {
-      padding: 70px 0;
-    }
-
-    .section h2 {
-      font-size: 28px;
-      margin-bottom: 30px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 24px;
-    }
-
-    .card {
-      background: var(--panel);
-      border-radius: 14px;
-      padding: 26px;
-      border: 1px solid #1f2937;
-      transition: transform .2s ease, border-color .2s ease;
-    }
-
-    .card svg {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 16px;
-      color: var(--accent2);
-      opacity: .9;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent)
-    }
-
-    .card h3 {
-      margin-top: 0;
-      font-size: 18px;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .example-grid,
-    .install-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .code-editor {
-      background: var(--panel);
-      border-radius: 14px;
-      border: 1px solid #1f293b;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .code-editor-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--panel-soft);
-      padding: 12px 26px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--muted);
-      border-bottom: 1px solid #1f293b;
-    }
-
-    .copy-btn {
-      margin-left: auto;
-      background: var(--panel);
-      border: 1px solid #1f293b;
-      color: var(--muted);
-      padding: 4px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .copy-btn:hover {
-      background: #1f293b;
-      color: var(--text)
-    }
-
-    .code-editor-body {
-      padding: 26px;
-      overflow: auto;
-      font-size: 14px;
-      font-family: "JetBrains Mono", monospace;
-      background: #020617;
-      flex-grow: 1;
-    }
-
-    .code-editor-body pre {
-      margin: 0;
-    }
-
-    .code-editor-body pre code {
-      background-color: #000;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      display: block;
-      border-radius: 0.375rem;
-      overflow-x: auto;
-      font-family: 'Fira Code', monospace;
-    }
-
-    /* The syntax highlighting was scoped to .code-block, let's scope it to the body */
-    .code-editor-body .token.keyword {
-      color: #c792ea
-    }
-
-    .code-editor-body .token.string {
-      color: #c3e88d
-    }
-
-    .code-editor-body .token.function {
-      color: #82aaff
-    }
-
-    .code-editor-body .token.property {
-      color: #f07178
-    }
-
-    .code-editor-body .token.punctuation {
-      color: #89ddff
-    }
-
-    .code-editor-body .token.operator {
-      color: #89ddff
-    }
-
-    .code-editor-body .token.number {
-      color: #f78c6c
-    }
-
-    .code-editor-body .token.comment {
-      color: #546e7a
-    }
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-      }
-
-      nav a {
-        margin-left: 0;
-      }
-
-      .hero {
-        padding: 60px 0 40px;
-      }
-
-      .hero h1 {
-        font-size: 38px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .example-grid,
-      .install-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .flow {
-        flex-direction: column;
-      }
-
-      .arrow {
-        width: 2px;
-        height: 40px;
-        background: linear-gradient(180deg, var(--accent), var(--accent2));
-      }
-    }
-
-    .scroller {
-      max-width: 100%;
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
-      mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
-    }
-
-    .scroller-inner {
-      display: flex;
-      gap: 40px;
-      width: max-content;
-      flex-wrap: nowrap;
-    }
-
-    .scroller[data-animated="true"] .scroller-inner {
-      animation: scroll 40s linear infinite;
-    }
-
-    .logo-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .logo-item svg {
-      width: 24px;
-      height: 24px;
-      opacity: .8;
-    }
-
-    @keyframes scroll {
-      to {
-        transform: translate(calc(-50% - 20px));
-      }
-    }
-
-    footer {
-      margin-top: 80px;
-      padding: 40px 0;
-      text-align: center;
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    .actra-col {
-      background: rgba(99, 102, 241, 0.08);
-      color: var(--accent);
-      font-weight: 500;
-    }
-
-
-    .code-editor {
-      border-radius: 14px;
-      border: 1px solid #1f2937;
-      overflow: hidden;
-    }
-
-    .code-editor-header {
-      background: #0f172a;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--muted);
-      border-bottom: 1px solid #1f2937;
-    }
-
-    .CodeMirror {
-      height: auto;
-      min-height: 220px;
-      font-size: 13px;
-      font-family: "JetBrains Mono", monospace;
-    }
-
-    table td,
-    table th {
-      text-align: left !important;
-      vertical-align: top;
-    }
-
-    .CodeMirror {
-      text-align: left !important;
-    }
-
-    pre {
-      text-align: left;
-    }
-
-    .code-editor-header {
-      text-align: left;
-    }
-
-    .section h2,
-    .section p {
-      text-align: center;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      transition: 0.2s ease;
-    }
-
-    .section {
-      padding: 60px 0;
-    }
-
-    /* tighter spacing between consecutive sections */
-    .section+.section {
-      padding-top: 30px;
-    }
-
-    .section h2 {
-      margin-bottom: 20px;
-    }
-
-    .editor-controls {
-      display: flex;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .dot.red {
-      background: #ef4444;
-    }
-
-    .dot.yellow {
-      background: #eab308;
-    }
-
-    .dot.green {
-      background: #22c55e;
-    }
-
-    table td {
-      padding: 14px 12px;
-    }
-
-    /*Hero Animation*/
-    .hero h1 {
-      animation:
-        fadeUp 0.6s ease forwards,
-        text-gradient 10s linear infinite;
-    }
-
-    .hero p {
-      animation: fadeUp 0.6s ease forwards;
-      animation-delay: 0.15s;
-    }
-
-    .hero .buttons {
-      animation: fadeUp 0.6s ease forwards;
-      animation-delay: 0.3s;
-    }
-
-
-    .hero p {
-      animation-delay: 0.1s;
-    }
-
-    .buttons {
-      animation-delay: 0.2s;
-    }
-
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /*CTA Glow*/
-    .btn {
-      position: relative;
-    }
-
-    .btn::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      opacity: 0;
-      filter: blur(10px);
-      z-index: -1;
-      transition: 0.3s;
-    }
-
-    .btn:hover::after {
-      opacity: 0.6;
-    }
-
-    /*Code Editor Animation*/
-    .code-editor {
-      opacity: 0;
-      transform: translateY(10px);
-      animation: fadeUp 0.6s ease forwards;
-    }
-
-    /* Old styles for tabs and code-blocks are removed below */
-    .tabs,
-    .tab-list,
-    .tab-item,
-    .tab-panel,
-    .code-block,
-    .install-grid h4 {
-      /* These styles are no longer needed and have been replaced. */
-    }
-  </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Actra",
+      "applicationCategory": "DeveloperTool",
+      "description": "AI agent governance and in-process policy engine for APIs and workflows",
+      "operatingSystem": "Cross-platform",
+      "programmingLanguage": ["JavaScript", "TypeScript", "Python", "Rust"]
+    }
+</script>
 </head>
 
 <body>
@@ -648,55 +45,98 @@
           <line x1="50" y1="28" x2="20" y2="67" stroke="#94a3b8" stroke-width="3" />
           <line x1="50" y1="28" x2="80" y2="67" stroke="#94a3b8" stroke-width="3" />
         </svg>
-        <span>Actra</span>
+        <a href="/" style="color:inherit;text-decoration:none;">Actra</a>
       </div>
 
       <nav>
-        <a href="playground.html">Try Playground</a>
+
+        <!-- CATEGORY -->
+        <a href="agentic-governance">Agentic Governance</a>
+
+        <!-- USE CASE -->
+        <a href="/ai-agent-guardrails">Guardrails</a>
+
+        <!-- COMPARISON -->
+        <a href="/opa-vs-actra">OPA Alternative</a>
+
+        <!-- TECH -->
+        <a href="/runtime-policy-engine">Runtime</a>
+
+        <!-- DOCS -->
         <a href="https://docs.actra.dev">Docs</a>
+
+        <!-- GITHUB -->
         <a href="https://github.com/getactra/actra">GitHub</a>
+
       </nav>
-      <button id="themeToggle" style="
-  margin-left:20px;
-  padding:6px 10px;
-  border-radius:8px;
-  border:1px solid var(--panel-soft);
-  background:var(--panel);
-  color:var(--text);
-  cursor:pointer;
-  font-size:12px;
-">
-        🌙 Dark
-      </button>
+
+      <div style="display:flex;align-items:center;gap:12px">
+
+        <!-- PRIMARY CTA -->
+        <a class="btn" href="playground" style="padding:8px 16px;font-size:13px">
+          Playground
+        </a>
+
+        <!-- THEME TOGGLE -->
+        <button id="themeToggle" style="
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid var(--panel-soft);
+      background:var(--panel);
+      color:var(--text);
+      cursor:pointer;
+      font-size:12px;
+    ">
+          🌙 Dark
+        </button>
+
+      </div>
     </header>
 
     <!-- HERO -->
     <section class="hero">
       <div style="
-  display:inline-block;
-  padding:6px 12px;
-  border:1px solid var(--accent);
-  border-radius:20px;
-  font-size:11px;
-  color:var(--accent);
-  margin-bottom:12px;
-">
-        Agent-native execution control
+    display:inline-block;
+    padding:6px 12px;
+    border:1px solid var(--accent);
+    border-radius:20px;
+    font-size:11px;
+    color:var(--accent);
+    margin-bottom:12px;
+  ">
+        Agentic Governance • Runtime Policy Engine
       </div>
+
       <h1>
-        Control what runs — <br />
-        before it runs
+        AI Agent Governance & Policy Engine <br />
+        Control Actions Before Execution
       </h1>
 
       <p>
-        Evaluate policies inside your application across APIs, workflows, and AI agents.<br />
+        Enforce guardrails for AI agents, APIs, and workflows - at runtime.
+      </p>
+
+      <p>
+        Evaluate policies inside your application.<br />
         <span style="color:var(--muted)">
           No servers. No latency. Deterministic decisions.
         </span>
       </p>
 
       <p style="text-align:center;color:var(--accent2);font-size:13px;margin-top:6px">
-        Open-source • Lightweight • Production-ready
+        Open-source • Lightweight
+      </p>
+    </section>
+
+    <section class="section" id="agentic-governance">
+      <h2>What is Agentic Governance?</h2>
+
+      <p style="text-align:center;color:var(--muted);max-width:720px;margin:auto">
+        Agentic governance is the ability to control what AI agents can do at runtime -
+        including tools, APIs and workflows.
+        <br /><br />
+        As AI systems become autonomous, policy must move from infrastructure
+        to execution. Actra enforces decisions exactly where actions happen.
       </p>
     </section>
 
@@ -706,7 +146,7 @@
       <div class="buttons">
         <a class="btn" href="https://docs.actra.dev">Get Started</a>
         <a class="btn" href="https://github.com/getactra/actra">GitHub</a>
-        <a class="btn" href="playground.html">Playground</a>
+        <a class="btn" href="playground">Playground</a>
       </div>
     </section>
 
@@ -818,7 +258,8 @@
       <h2 id="value-props">Why Actra ?</h2>
 
       <p style="text-align:center;color:var(--muted);max-width:650px;margin:0 auto 30px">
-        Actra is built for modern systems where decisions must be fast, local, and controllable.
+        Actra is an in-process policy engine built for AI agent governance,
+        real-time guardrails and runtime decision control.
       </p>
 
       <div class="grid">
@@ -830,7 +271,7 @@
 
         <div class="card">
           <h3>🌍 Runs everywhere</h3>
-          <p>Node, Bun, Deno, browser, and edge — one engine across all runtimes.</p>
+          <p>Node, Bun, Deno, browser, and edge - one engine across all runtimes.</p>
         </div>
 
         <div class="card">
@@ -854,9 +295,9 @@
       <h2>Why policy must move closer to execution</h2>
 
       <p style="text-align:center;color:var(--muted);max-width:680px;margin:0 auto 30px">
-        Modern systems don’t just respond — they act.
+        Modern systems don’t just respond - they act.
         APIs execute operations, workflows automate decisions, and AI agents take actions.
-        Policy can no longer sit behind infrastructure — it must run where actions happen.
+        Policy can no longer sit behind infrastructure - it must run where actions happen.
       </p>
 
       <p style="text-align:center;color:var(--accent);font-size:12px;margin-bottom:12px">
@@ -872,12 +313,12 @@
 
         <div class="card">
           <h3>🌍 Runs wherever your code runs</h3>
-          <p>From backend to browser to edge — one engine, consistent behavior everywhere.</p>
+          <p>From backend to browser to edge - one engine, consistent behavior everywhere.</p>
         </div>
 
         <div class="card">
           <h3>🤖 Control real-world actions</h3>
-          <p>Define what agents, APIs, and workflows are allowed to do — before execution.</p>
+          <p>Define what agents, APIs, and workflows are allowed to do - before execution.</p>
         </div>
 
         <div class="card">
@@ -894,15 +335,49 @@
     <section class="section">
       <h2>Why now?</h2>
       <p style="text-align:center;color:var(--muted);max-width:600px;margin:auto">
-        AI systems are no longer passive — they act.<br />
+        AI systems are no longer passive - they act.<br />
         Policy must execute at the point of action, not behind infrastructure.
       </p>
     </section>
 
+<section class="section" id="how-it-works">
+  <h2>How Actra Works</h2>
+
+  <p style="text-align:center;color:var(--muted);max-width:700px;margin:auto">
+    Actra evaluates policies in-process at runtime - before actions execute.
+    <br /><br />
+    Define rules once, and enforce them across AI agents, APIs, and workflows
+    without network calls or external services.
+  </p>
+
+  <div class="grid" style="margin-top:30px">
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">⚙️</div>
+      <h3>1. Define policies</h3>
+      <p>Write declarative rules for actions, tools, and workflows.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">⚡</div>
+      <h3>2. Evaluate at runtime</h3>
+      <p>Actra runs inside your app and evaluates decisions instantly.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">🛡️</div>
+      <h3>3. Enforce before execution</h3>
+      <p>Allow or block actions before they happen.</p>
+    </div>
+
+  </div>
+</section>
+
+
     <!-- EXAMPLE -->
     <section class="section">
       <h2>See it in action</h2>
-      <p style="text-align:center;color:var(--muted);max-width:600px;margin:auto">
+      <p style="text-align:center;color:var(--muted);max-width:600px;margin:auto;margin-bottom:10px;">
         Evaluate policies in real-time with a simple API.
       </p>
       <div class="example-grid">
@@ -917,8 +392,8 @@
         </div>
       </div>
       <div style="text-align:center;margin-top:24px">
-        <a href="playground.html" class="btn">
-          Run in Playground →
+        <a href="playground" class="btn">
+          Run in Playground >
         </a>
         <p style="font-size:12px;color:var(--muted);margin-top:10px">
           Runs real Actra WASM locally in your browser
@@ -1013,9 +488,14 @@
         </div>
       </div>
 
+      <p style="text-align:center;color:var(--muted);max-width:720px;margin:0 auto 20px">
+        Actra is a modern alternative to Open Policy Agent (OPA) and AWS Cedar,
+        designed specifically for AI agents, APIs and runtime execution control.
+      </p>
+
       <p style="text-align:center;color:var(--muted);max-width:720px;margin:0 auto 30px">
         Most policy engines run as infrastructure.
-        Actra runs inside your application — eliminating latency and external dependencies.
+        Actra runs inside your application - eliminating latency and external dependencies.
       </p>
 
       <div class="card" style="overflow:auto">
@@ -1156,7 +636,7 @@
       <h2>Get started in seconds</h2>
 
       <p style="text-align:center;color:var(--muted);max-width:600px;margin:0 auto 30px">
-        Install Actra and start evaluating policies locally — no setup required.
+        Install Actra and start evaluating policies locally - no setup required.
       </p>
 
       <div class="install-grid">
@@ -1207,7 +687,7 @@
 
       <!-- CTA -->
       <div style="text-align:center;margin-top:24px">
-        <a href="playground.html" class="btn">
+        <a href="playground" class="btn">
           Try it in Playground →
         </a>
       </div>
@@ -1222,7 +702,17 @@
 
         <div class="card">
           <h3>🤖 AI Agent Guardrails</h3>
-          <p>Define what agents are allowed to do — tools, APIs, and sensitive actions.</p>
+          <p>Control what LLM agents can do - tools, APIs and sensitive actions.</p>
+        </div>
+
+        <div class="card">
+          <h3>🔧 Tool & API Control</h3>
+          <p>Enforce policies before calling external APIs or executing tools.</p>
+        </div>
+
+        <div class="card">
+          <h3>⚡ Runtime Policy Enforcement</h3>
+          <p>Evaluate decisions in real-time without network latency.</p>
         </div>
 
         <div class="card">
@@ -1230,13 +720,19 @@
           <p>Replace hardcoded authorization logic with declarative policies.</p>
         </div>
 
-        <div class="card">
-          <h3>⚡ Edge Enforcement</h3>
-          <p>Evaluate decisions at the edge without network calls.</p>
-        </div>
-
       </div>
+    </section>
 
+    <section class="section">
+      <h2>Built for AI Agents, APIs and Workflows</h2>
+
+      <p style="text-align:center;color:var(--muted);max-width:720px;margin:auto">
+        Whether you're building LLM agents, MCP integrations, or automated workflows,
+        Actra gives you precise control over what actions are allowed - before execution.
+        <br /><br />
+        Use Actra to implement AI guardrails, enforce policies and build safe,
+        deterministic agent systems.
+      </p>
     </section>
 
     <!-- PHILOSOPHY -->
@@ -1250,8 +746,66 @@
 
     </section>
 
-    <footer>
-      &copy; 2026 Actra • In-Process Policy Engine
+    <footer style="margin-top:80px;padding:50px 0 30px;border-top:1px solid #1f2937">
+
+      <div style="
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap:30px;
+    max-width:1150px;
+    margin:auto;
+    padding:0 24px;
+  ">
+
+        <!-- BRAND -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Actra</div>
+          <p style="color:var(--muted);font-size:13px;line-height:1.6">
+            Agentic governance layer for AI agents, APIs and workflows.
+            Enforce policies at runtime with zero latency.
+          </p>
+        </div>
+
+        <!-- PLATFORM -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">PLATFORM</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="agentic-governance">Agentic Governance</a>
+            <a href="runtime-policy-engine">Runtime Policy Engine</a>
+            <a href="ai-agent-guardrails">AI Agent Guardrails</a>
+          </div>
+        </div>
+
+        <!-- COMPARE -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Compare</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="opa-vs-actra">OPA Alternative</a>
+          </div>
+        </div>
+
+        <!-- DEVELOPERS -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Developers</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="https://docs.actra.dev">Documentation</a>
+            <a href="https://github.com/getactra/actra">GitHub</a>
+            <a href="playground">Playground</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM -->
+      <div style="
+    margin-top:40px;
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+  ">
+        © 2026 Actra • AI Agent Governance & In-Process Policy Engine
+      </div>
+
     </footer>
 
   </div>
@@ -1368,8 +922,5 @@ decision = actra.evaluate({
       localStorage.setItem("theme", isLight ? "light" : "dark");
     });
   </script>
-
-
 </body>
-
 </html>
