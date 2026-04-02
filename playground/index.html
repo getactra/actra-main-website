@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Actra Playground</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/yaml/yaml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
+
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --panel: #ffffff;
+      --panel-soft: #f1f5f9;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #6366f1;
+      --accent2: #22d3ee;
+    }
+
+    .dark {
+      --bg: #0b0f1a;
+      --panel: #121826;
+      --panel-soft: #1b2336;
+      --text: #e6edf7;
+      --muted: #94a3b8;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .theme-toggle {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .theme-toggle button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 8px;
+      background: var(--panel-soft);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .editor {
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .editor-header {
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      border-bottom: 1px solid #1f2937;
+      background: var(--panel-soft);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    textarea {
+      background: #020617;
+      border: none;
+      color: #e6edf7;
+      padding: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 200px;
+      outline: none;
+    }
+
+    .actions {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    button.run-btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button.run-btn:hover {
+      opacity: 0.9;
+    }
+
+    .result pre {
+      margin: 0;
+      padding: 20px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      background: #020617;
+      color: #c3e88d;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .CodeMirror {
+      height: 220px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      background: #020617;
+      color: #e6edf7;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .CodeMirror-gutters {
+      background: #020617;
+      border-right: 1px solid #1f2937;
+    }
+
+    .CodeMirror-cursor {
+      border-left: 1px solid #22d3ee;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tab {
+      background: transparent;
+      border: 1px solid #1f2937;
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .tab.active {
+      background: var(--panel);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .tab:hover {
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .CodeMirror .highlight-rule-success {
+      background: rgba(99, 102, 241, 0.2);
+      border-left: 3px solid #6366f1;
+    }
+
+    .CodeMirror .highlight-rule-failed {
+      background: rgba(239, 68, 68, 0.15);
+      border-left: 3px solid #ef4444;
+    }
+
+    .CodeMirror .highlight-condition-success {
+      background: rgba(34, 197, 94, 0.2);
+      border-left: 3px solid #22c55e;
+    }
+
+    .CodeMirror .highlight-condition-failed {
+      background: rgba(239, 68, 68, 0.2);
+      border-left: 3px solid #ef4444;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>Actra Playground</h1>
+
+    <div class="theme-toggle">
+      <button id="theme-toggle-btn">☀️ Light Mode</button>
+    </div>
+
+    <div id="engine-version-note"
+      style="text-align:center;color:#67e8f9;font-size:13px;margin-bottom:24px;font-weight:500;">
+      Powered by real Actra WASM compiler in your browser • no backend
+    </div>
+
+    <div class="grid">
+      <!-- Schema -->
+      <div class="editor">
+        <div class="editor-header">Schema YAML</div>
+        <textarea id="schema-editor">
+version: 1
+
+actions:
+  refund:
+    fields:
+      amount: number
+
+actor:
+  fields:
+    role: string
+
+snapshot:
+  fields:
+    fraud_flag: boolean
+
+</textarea>
+      </div>
+
+      <!-- Policy -->
+      <div class="editor">
+        <div class="editor-header">Policy YAML</div>
+        <textarea id="policy-editor">
+version: 1
+
+rules:
+  - id: block_large_refund
+    scope:
+      action: refund
+    when:
+      subject:
+        domain: action
+        field: amount
+      operator: greater_than
+      value:
+        literal: 1000
+    effect: block
+</textarea>
+      </div>
+
+      <!-- Governance -->
+      <div class="editor">
+        <div class="editor-header">Governance YAML</div>
+        <textarea id="governance-editor"></textarea>
+      </div>
+
+      <!-- Payload -->
+      <div class="editor">
+        <div class="editor-header">Payload</div>
+        <textarea id="payload-editor">
+# Input to policy evaluation
+actor:
+  role: intern        # who is performing action
+
+action:
+  type: refund
+  amount: 5000  # what is being attempted
+
+snapshot:
+  # optional contextual data about environment/resource
+  resource_owner: external
+</textarea>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="editor" style="margin-top: 20px;">
+      <div class="editor-header" style="display:flex;align-items:center;">
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('decision')">Decision</button>
+          <button class="tab" onclick="switchTab('explain')">Explain</button>
+        </div>
+        <button class="copy-btn" style="margin-left:auto" onclick="copyResult()">Copy</button>
+      </div>
+
+      <textarea id="decision-editor"></textarea>
+      <textarea id="explain-editor" style="display:none;"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="run-btn" onclick="runEvaluation()">Validate & Evaluate</button>
+    </div>
+
+    <!--LEGEND-->
+    <div class="editor" style="margin-top:20px">
+      <div class="editor-header">How evaluation works</div>
+      <div style="padding:14px;font-size:13px;color:var(--muted);line-height:1.6">
+        <div style="margin-bottom:10px">
+          <span style="display:inline-block;width:12px;height:12px;background:rgba(99,102,241,0.5);margin-right:8px;border-radius:3px"></span>
+          <b>Matched rule</b> - rule that determined final decision
+        </div>
+
+        <div style="margin-bottom:10px">
+          <span style="display:inline-block;width:12px;height:12px;background:rgba(239,68,68,0.5);margin-right:8px;border-radius:3px"></span>
+          <b>Failed rule</b> - evaluated but did not match
+        </div>
+
+        <div style="margin-bottom:10px">
+          <span style="display:inline-block;width:12px;height:12px;background:rgba(34,197,94,0.5);margin-right:8px;border-radius:3px"></span>
+          <b>Matched condition</b> - condition evaluated to true
+        </div>
+
+        <div>
+          <span style="display:inline-block;width:12px;height:12px;background:rgba(239,68,68,0.3);margin-right:8px;border-radius:3px"></span>
+          <b>Failed condition</b> - condition evaluated to false
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script type="module">
+    import { Actra } from "https://esm.sh/@getactra/actra";
+    window.Actra = Actra;
+  </script>
+
+  <script>
+    window.onload = function () {
+      const editors = {};
+
+      function createEditor(id, mode = "yaml", readOnly = false) {
+        editors[id] = CodeMirror.fromTextArea(document.getElementById(id), {
+          mode,
+          theme: "material-darker",
+          lineNumbers: !readOnly,
+          readOnly,
+          indentUnit: 2,
+          tabSize: 2,
+          lineWrapping: true
+        });
+        return editors[id];
+      }
+
+      const schemaEditor = createEditor("schema-editor");
+      const policyEditor = createEditor("policy-editor");
+      const governanceEditor = createEditor("governance-editor");
+      const payloadEditor = createEditor("payload-editor");
+      const decisionEditor = createEditor("decision-editor", "application/json", true);
+      const explainEditor = createEditor("explain-editor", "text/plain", true);
+
+      const toggleBtn = document.getElementById("theme-toggle-btn");
+      let currentTheme = "dark"; // default
+
+      function applyTheme(theme) {
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          toggleBtn.textContent = "☀️ Light Mode";
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          toggleBtn.textContent = "🌙 Dark Mode";
+        }
+        Object.values(editors).forEach(editor => {
+          editor.setOption("theme", theme === "dark" ? "material-darker" : "default");
+        });
+        localStorage.setItem("theme", theme);
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        currentTheme = currentTheme === "dark" ? "light" : "dark";
+        applyTheme(currentTheme);
+      });
+
+      applyTheme(currentTheme);
+
+      // Tabs
+      const decisionWrapper = decisionEditor.getWrapperElement();
+      const explainWrapper = explainEditor.getWrapperElement();
+      decisionWrapper.style.display = "block";
+      explainWrapper.style.display = "none";
+
+      window.switchTab = function (tab) {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        if (tab === "decision") {
+          decisionWrapper.style.display = "block";
+          explainWrapper.style.display = "none";
+          document.querySelector(".tab:nth-child(1)").classList.add("active");
+          requestAnimationFrame(() => decisionEditor.refresh());
+        } else {
+          decisionWrapper.style.display = "none";
+          explainWrapper.style.display = "block";
+          document.querySelector(".tab:nth-child(2)").classList.add("active");
+          requestAnimationFrame(() => explainEditor.refresh());
+        }
+      };
+
+      window.copyResult = function () {
+        const text = decisionWrapper.style.display !== "none" ? decisionEditor.getValue() : explainEditor.getValue();
+        navigator.clipboard.writeText(text);
+      };
+
+      decisionEditor.setValue('// Click "Validate & Evaluate"');
+      explainEditor.setValue('// Explanation will appear here');
+
+      // Engine version
+      const engineVersionNote = document.getElementById("engine-version-note");
+      (async function updateEngineVersionNote() {
+        try {
+          const version = await window.Actra.compilerVersion();
+          engineVersionNote.textContent =
+            `Powered by real Actra WASM compiler in your browser • no backend • v${version}`;
+        } catch {
+          engineVersionNote.textContent =
+            "Powered by real Actra WASM compiler in your browser • no backend";
+        }
+      })();
+
+      // Evaluation logic
+      let markers = [];
+      function clearHighlights() {
+        markers.forEach(m => m.clear());
+        markers = [];
+      }
+
+      function highlightMatchedRule(ruleId) {
+        const doc = policyEditor.getDoc();
+        const totalLines = doc.lineCount();
+        clearHighlights();
+        let startLine = -1;
+        for (let i = 0; i < totalLines; i++) {
+          if (doc.getLine(i).includes(`id: ${ruleId}`)) {
+            startLine = i;
+            break;
+          }
+        }
+        if (startLine === -1) return;
+        let endLine = startLine;
+        for (let i = startLine + 1; i < totalLines; i++) {
+          if (doc.getLine(i).trim().startsWith("- id:")) break;
+          endLine = i;
+        }
+        const marker = doc.markText({ line: startLine, ch: 0 }, { line: endLine, ch: 100 }, { className: "highlight-rule-success" });
+        markers.push(marker);
+        policyEditor.scrollIntoView({ line: startLine, ch: 0 }, 100);
+      }
+
+      window.runEvaluation = async function () {
+        try {
+          clearHighlights();
+          const schema = schemaEditor.getValue();
+          const policy = policyEditor.getValue();
+          const governance = governanceEditor.getValue();
+          const payload = jsyaml.load(payloadEditor.getValue());
+
+          const compiled = await window.Actra.fromStrings(schema, policy, governance);
+          const decision = compiled.evaluate(payload);
+
+          let explainLogs = "";
+          const originalLog = console.log;
+          console.log = (...args) => { explainLogs += args.join(" ") + "\n"; };
+
+          let explain;
+          try { explain = compiled.explain(payload); } finally { console.log = originalLog; }
+
+          decisionEditor.setValue(JSON.stringify(decision, null, 2));
+          explainEditor.setValue(typeof explain === "string" ? explain : explainLogs || JSON.stringify(explain, null, 2));
+
+          if (decision?.matched_rule) highlightMatchedRule(decision.matched_rule);
+        } catch (err) {
+          const message = err?.message || String(err);
+          decisionEditor.setValue(JSON.stringify({ error: message }, null, 2));
+          explainEditor.setValue(`Explanation unavailable:\n${message}`);
+        }
+      };
+    };
+  </script>
+</body>
+
+</html>
