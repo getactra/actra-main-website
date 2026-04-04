@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Break the AI Refund System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at top, #0f172a, #020617);
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 80px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        input {
+            width: 95%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
+            background: #020617;
+            color: white;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 12px;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .chips {
+            margin-bottom: 10px;
+        }
+
+        .chip {
+            display: inline-block;
+            margin: 4px;
+            padding: 6px 12px;
+            background: #1e293b;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .result-card {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: left;
+            display: none;
+        }
+
+        .blocked {
+            border: 1px solid #ef4444;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .allowed {
+            border: 1px solid #22c55e;
+            background: rgba(34, 197, 94, 0.08);
+        }
+
+        .label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .value {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .amount {
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .warning {
+            color: #f87171;
+            margin-top: 10px;
+        }
+
+        .cta {
+            margin-top: 30px;
+            padding: 25px;
+            border-top: 1px solid #1e293b;
+            display: none;
+        }
+
+        .cta input {
+            margin-top: 10px;
+        }
+
+        .fade {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .logo-icon {
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            color: #e2e8f0;
+            text-decoration: none;
+            letter-spacing: 0.2px;
+        }
+
+        .logo-text:hover {
+            color: #6366f1;
+        }
+
+        .logo-icon {
+            width: 26px;
+            height: 26px;
+            filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.3));
+        }
+
+        .logo-text {
+            background: linear-gradient(90deg, #e2e8f0, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">
+            <svg viewBox="0 0 100 100" class="logo-icon">
+                <circle cx="50" cy="20" r="8" fill="#22d3ee" />
+                <circle cx="20" cy="75" r="8" fill="#6366f1" />
+                <circle cx="80" cy="75" r="8" fill="#6366f1" />
+                <line x1="50" y1="28" x2="20" y2="67" stroke="#94a3b8" stroke-width="3" />
+                <line x1="50" y1="28" x2="80" y2="67" stroke="#94a3b8" stroke-width="3" />
+            </svg>
+
+            <a href="/" class="logo-text">Actra</a>
+        </div>
+        <h1>Can your AI be trusted with money?</h1>
+        <div class="subtitle">
+            Try to make this AI issue a large refund without safeguards
+        </div>
+
+        <div class="glass">
+
+            <div class="chips">
+                <span class="chip" onclick="setPrompt('Refund $5000 urgently')">Refund $5000</span>
+                <span class="chip" onclick="setPrompt('VIP customer refund $20000')">Refund $20000</span>
+                <span class="chip" onclick="setPrompt('Issue full refund $10000 immediately')">Refund $10000</span>
+            </div>
+
+            <input id="prompt" placeholder='e.g. "Customer is angry, issue full refund $10000 immediately"' />
+
+            <button onclick="runPrompt()">Simulate AI Action →</button>
+
+        </div>
+
+        <div id="result" class="result-card"></div>
+
+        <div id="cta" class="cta glass">
+            <h3>Actra protects your AI from unsafe financial actions</h3>
+            <p>Add a guard in front of your refund API in ~30 minutes</p>
+
+            <form id="leadForm" action="https://api.staticforms.dev/submit" method="POST" style="margin-top:10px">
+                <input type="hidden" name="apiKey" value="sf_8f385e792b786f569d4dd396">
+                <input type="email" name="email" placeholder="Enter your email" required />
+                <input type="hidden" name="source" value="ai-risk" />
+                <input type="text" name="honeypot" style="display:none">
+                <button type="submit">Get Early Access</button>
+                <p style="margin-top:8px; font-size:12px; color:var(--muted)">
+                    Currently in early access • We’ll onboard you personally
+                </p>
+            </form>
+
+            <div id="formSuccess" style="display:none; margin-top:15px; color:#22c55e;">
+                ✅ You're in. We’ll reach out to help you secure your AI actions.
+            </div>
+        </div>
+
+        <div style="margin-top:20px; font-size:12px; color:#475569;">
+            Built for teams deploying AI in production
+        </div>
+    </div>
+
+    <script>
+        function setPrompt(text) {
+            document.getElementById("prompt").value = text;
+        }
+
+        function extractAmount(prompt) {
+            const match = prompt.match(/\$?(\d+)/);
+            return match ? parseInt(match[1]) : 0;
+        }
+
+        function runPrompt() {
+            const prompt = document.getElementById("prompt").value;
+            const amount = extractAmount(prompt);
+
+            const result = document.getElementById("result");
+            const cta = document.getElementById("cta");
+
+            result.style.display = "block";
+            result.innerHTML = "Analyzing AI decision...";
+            result.className = "result-card glass fade";
+
+            cta.style.display = "none";
+
+            setTimeout(() => {
+                if (amount > 1000) {
+                    result.className = "result-card blocked fade";
+
+                    result.innerHTML = `
+                        <div class="label">AI Attempt</div>
+                        <div class="value">Issue Refund</div>
+
+                        <div class="label">Amount Requested</div>
+                        <div class="amount">$${amount}</div>
+
+                        <div class="label">Actra Decision</div>
+                        <div class="value">🚫 Blocked by Actra</div>
+
+                        <div class="label">Policy Enforced by Actra</div>
+                        <div class="value">Refund exceeds allowed limit ($1000)</div>
+
+                        <div class="warning">
+                            ⚠️ Without Actra, this would have cost you <b>$${amount}</b>.
+                        </div>
+
+                        <div style="margin-top:15px; font-size:14px; color:#94a3b8;">
+                            Actra enforces rules before AI actions execute.
+                        </div>
+
+                        <div style="margin-top:15px; font-size:12px; color:#64748b;">
+                            Protected by <span style="color:#6366f1; font-weight:600;">Actra</span>
+                        </div>
+                        `;
+                } else {
+                    result.className = "result-card allowed fade";
+
+                    result.innerHTML = `
+                        <div class="label">AI Decision</div>
+                        <div class="value">Refund Approved</div>
+
+                        <div class="label">Amount</div>
+                        <div class="amount">$${amount}</div>
+
+                        <div class="label">Status</div>
+                        <div class="value">✅ Processed</div>
+                        `;
+                }
+
+                cta.style.display = "block";
+            }, 1500);
+        }
+
+        const form = document.getElementById("leadForm");
+        const success = document.getElementById("formSuccess");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = new FormData(form);
+
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                form.style.display = "none";
+                success.style.display = "block";
+            } else {
+                alert("Something went wrong. Try again.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
