@@ -2,12 +2,11 @@
 <html lang="en">
 
 <head>
-  <base href="/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="What is agentic governance? Learn how to control AI agent actions, tools and workflows at runtime." />
-  <title>Policy engines built for different eras | Actra</title>
+  <title>Runtime Policy Engine | Actra</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -32,13 +31,13 @@
         <a href="agentic-governance">Agentic Governance</a>
 
         <!-- USE CASE -->
-        <a href="/ai-agent-guardrails">Guardrails</a>
+        <a href="ai-agent-guardrails">Guardrails</a>
 
         <!-- COMPARISON -->
-        <a href="/opa-vs-actra">OPA Alternative</a>
+        <a href="opa-vs-actra">OPA Alternative</a>
 
         <!-- TECH -->
-        <a href="/runtime-policy-engine">Runtime</a>
+        <a href="runtime-policy-engine">Runtime</a>
 
         <!-- DOCS -->
         <a href="https://docs.actra.dev">Docs</a>
@@ -71,131 +70,132 @@
       </div>
     </header>
 
-
 <section class="hero">
-  <h1>Actra vs OPA</h1>
-  <p>Modern policy engine vs infrastructure-era policy engine</p>
+  <h1>Runtime Policy Engine</h1>
+  <p>Evaluate decisions exactly when they matter</p>
   <p style="color:var(--muted);font-size:14px">
-    Why AI agents require a new approach to policy enforcement
+    In-process policy evaluation for real-time systems
   </p>
 </section>
 
-<!-- POSITIONING -->
+<!-- DEFINITION -->
 <section class="section">
   <p style="max-width:720px;margin:auto;color:var(--muted);line-height:1.7">
-    <strong>Open Policy Agent (OPA)</strong> was designed for infrastructure policy -
-    enforcing rules across services, gateways and cloud systems.
+    A <strong>runtime policy engine</strong> evaluates rules during execution -
+    at the exact moment an action is about to occur.
     <br /><br />
-    <strong>Actra</strong> is built for AI agents - controlling actions, tools and workflows
-    at runtime before execution.
-    <br /><br />
-    As systems evolve from APIs to autonomous agents, policy must move closer to execution.
+    Unlike traditional policy systems that run before deployment or after requests,
+    runtime engines make decisions <strong>in real time</strong>,
+    ensuring every action is validated before execution.
   </p>
 </section>
 
-<!-- VISUAL COMPARISON -->
+<!-- WHY RUNTIME -->
 <section class="section">
-  <h2>Two Different Approaches</h2>
+  <h2>Why Runtime Matters</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">⚡</div>
+      <h3>Real-time decisions</h3>
+      <p>Evaluate policies exactly when actions happen.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">🚫</div>
+      <h3>No latency</h3>
+      <p>Run inside your application without network calls.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">🔁</div>
+      <h3>Deterministic</h3>
+      <p>Same input always produces the same decision.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- BEFORE VS AFTER -->
+<section class="section">
+  <h2>From Pre-Execution Checks → Runtime Enforcement</h2>
 
   <div class="grid">
 
     <div class="card">
       <div style="font-size:22px;margin-bottom:10px">🏗️</div>
-      <h3>OPA</h3>
-      <p>External policy engine designed for infrastructure and network-level enforcement.</p>
+      <h3>Traditional Policy</h3>
+      <p>Evaluated before deployment or after requests are made.</p>
     </div>
 
     <div class="card actra-col">
       <div style="font-size:22px;margin-bottom:10px">⚡</div>
-      <h3>Actra</h3>
-      <p>In-process policy engine built for runtime decision control inside applications.</p>
+      <h3>Runtime Policy</h3>
+      <p>Evaluated at execution time - before actions happen.</p>
     </div>
 
   </div>
 </section>
 
-<!-- CORE DIFFERENCES -->
+<!-- WHERE IT RUNS -->
 <section class="section">
-  <h2>Key Differences</h2>
+  <h2>Where Runtime Policy Engines Run</h2>
 
   <div class="grid">
-
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">⚙️</div>
-      <h3>Execution Model</h3>
-      <p>OPA runs externally. Actra runs directly inside your application.</p>
-    </div>
 
     <div class="card">
       <div style="font-size:22px;margin-bottom:10px">🌐</div>
-      <h3>Latency</h3>
-      <p>OPA requires network calls. Actra evaluates instantly with zero latency.</p>
+      <h3>External (Traditional)</h3>
+      <p>Separate services requiring network calls for evaluation.</p>
     </div>
 
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">🤖</div>
-      <h3>AI Agent Support</h3>
-      <p>OPA does not support agent workflows. Actra is built for agents and tools.</p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">⚡</div>
-      <h3>Runtime Enforcement</h3>
-      <p>Actra evaluates actions before execution. OPA evaluates requests after they are made.</p>
+    <div class="card actra-col">
+      <div style="font-size:22px;margin-bottom:10px">⚙️</div>
+      <h3>In-process (Actra)</h3>
+      <p>Runs directly inside your application for instant decisions.</p>
     </div>
 
   </div>
 </section>
 
-<!-- WHY OPA FALLS SHORT -->
+<!-- ACTRA -->
 <section class="section">
-  <h2>Why OPA Falls Short for AI Agents</h2>
+  <h2>Actra Runtime Approach</h2>
 
-  <div class="grid">
-
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">❌</div>
-      <h3>No action-level control</h3>
-      <p>OPA cannot control individual agent actions or tool execution.</p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">❌</div>
-      <h3>Not built for agents</h3>
-      <p>Designed for APIs and services, not autonomous systems.</p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">❌</div>
-      <h3>Network dependency</h3>
-      <p>Requires external evaluation, adding latency and failure points.</p>
-    </div>
-
-  </div>
+  <p style="max-width:720px;margin:auto;color:var(--muted);line-height:1.7">
+    Actra is an in-process runtime policy engine built for modern systems.
+    <br /><br />
+    It evaluates policies inside your application <!--or via MCP proxy-->,
+    ensuring every decision is made instantly without network overhead.
+    <br /><br />
+    This enables consistent enforcement across AI agents, APIs and workflows
+    with zero latency and deterministic behavior.
+  </p>
 </section>
 
-<!-- WHY ACTRA -->
+<!-- USE CASES -->
 <section class="section">
-  <h2>Why Actra is Built for Modern Systems</h2>
+  <h2>Where Runtime Policy Engines Are Used</h2>
 
   <div class="grid">
-
-    <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">⚡</div>
-      <h3>In-process execution</h3>
-      <p>Runs inside your application for instant decisions.</p>
-    </div>
 
     <div class="card">
       <div style="font-size:22px;margin-bottom:10px">🤖</div>
-      <h3>Agent-native design</h3>
-      <p>Built for AI agents, tools and workflows.</p>
+      <h3>AI Agents</h3>
+      <p>Control tool usage and agent actions in real time.</p>
     </div>
 
     <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">🔒</div>
-      <h3>Deterministic enforcement</h3>
-      <p>Same input always produces the same decision.</p>
+      <div style="font-size:22px;margin-bottom:10px">🔐</div>
+      <h3>APIs</h3>
+      <p>Enforce authorization and policy decisions at execution time.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size:22px;margin-bottom:10px">🔁</div>
+      <h3>Workflows</h3>
+      <p>Control multi-step processes dynamically.</p>
     </div>
 
   </div>
@@ -203,10 +203,10 @@
 
 <!-- CTA -->
 <section class="section" style="text-align:center">
-  <h2>Move beyond infrastructure policy</h2>
+  <h2>Build with runtime enforcement</h2>
 
   <div class="buttons">
-    <a class="btn" href="/playground">Try Actra</a>
+    <a class="btn" href="/playground">Try Playground</a>
     <a class="btn" href="https://docs.actra.dev">Read Docs</a>
   </div>
 </section>
@@ -220,7 +220,7 @@
     <div class="card">
       <div style="font-size:22px;margin-bottom:10px">🧠</div>
       <h3>Agentic Governance</h3>
-      <p>Understand the new control model for AI systems.</p>
+      <p>Understand the broader control model.</p>
       <a href="/agentic-governance">Learn more →</a>
     </div>
 
@@ -232,10 +232,10 @@
     </div>
 
     <div class="card">
-      <div style="font-size:22px;margin-bottom:10px">⚡</div>
-      <h3>Runtime Policy Engine</h3>
-      <p>See how runtime enforcement works.</p>
-      <a href="/runtime-policy-engine">Learn more →</a>
+      <div style="font-size:22px;margin-bottom:10px">⚔️</div>
+      <h3>OPA Alternative</h3>
+      <p>Compare Actra with traditional policy engines.</p>
+      <a href="/opa-vs-actra">Compare →</a>
     </div>
 
   </div>
@@ -265,9 +265,9 @@
         <div>
           <div style="font-weight:600;margin-bottom:12px">PLATFORM</div>
           <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
-            <a href="//actra.dev/agentic-governance">Agentic Governance</a>
-            <a href="//actra.dev/runtime-policy-engine">Runtime Policy Engine</a>
-            <a href="//actra.dev/ai-agent-guardrails">AI Agent Guardrails</a>
+            <a href="agentic-governance">Agentic Governance</a>
+            <a href="runtime-policy-engine">Runtime Policy Engine</a>
+            <a href="ai-agent-guardrails">AI Agent Guardrails</a>
           </div>
         </div>
 
@@ -275,7 +275,7 @@
         <div>
           <div style="font-weight:600;margin-bottom:12px">Compare</div>
           <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
-            <a href="//actra.dev/opa-vs-actra">OPA Alternative</a>
+            <a href="opa-vs-actra">OPA Alternative</a>
           </div>
         </div>
 
@@ -285,7 +285,7 @@
           <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
             <a href="https://docs.actra.dev">Documentation</a>
             <a href="https://github.com/getactra/actra">GitHub</a>
-            <a href="//actra.dev/playground">Playground</a>
+            <a href="playground">Playground</a>
           </div>
         </div>
 
@@ -305,6 +305,7 @@
 
 
   </div>
+
     <script>
     const toggleBtn = document.getElementById("themeToggle");
 
