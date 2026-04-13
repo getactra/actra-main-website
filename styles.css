@@ -605,6 +605,55 @@
       animation: fadeUp 0.6s ease forwards;
     }
 
+        .editor {
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .editor-header {
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      border-bottom: 1px solid #1f2937;
+      background: var(--panel-soft);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    textarea {
+      background: #020617;
+      border: none;
+      color: #e6edf7;
+      padding: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 200px;
+      outline: none;
+    }
+
+    .CodeMirror {
+      height: 220px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      background: #020617;
+      color: #e6edf7;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .CodeMirror-gutters {
+      background: #020617;
+      border-right: 1px solid #1f2937;
+    }
+
+    .CodeMirror-cursor {
+      border-left: 1px solid #22d3ee;
+    }
+
+
     /* Old styles for tabs and code-blocks are removed below */
     .tabs,
     .tab-list,
