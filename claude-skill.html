@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AI Agent Guardrails & Policy Generator (Claude Skill) | Actra</title>
+
+  <meta name="description"
+    content="Generate AI agent guardrails and policies using natural language. Actra Claude Skill creates enforceable YAML policies for AI agents, APIs, and workflows." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/yaml/yaml.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <header>
+      <div class="logo">
+        <svg width="26" height="26" viewBox="0 0 100 100">
+          <circle cx="50" cy="20" r="8" fill="#22d3ee" />
+          <circle cx="20" cy="75" r="8" fill="#6366f1" />
+          <circle cx="80" cy="75" r="8" fill="#6366f1" />
+          <line x1="50" y1="28" x2="20" y2="67" stroke="#94a3b8" stroke-width="3" />
+          <line x1="50" y1="28" x2="80" y2="67" stroke="#94a3b8" stroke-width="3" />
+        </svg>
+        <a href="/" style="color:inherit;text-decoration:none;">Actra</a>
+      </div>
+
+      <nav>
+
+        <!-- CATEGORY -->
+        <a href="agentic-governance">Agentic Governance</a>
+
+        <!-- USE CASE -->
+        <a href="/ai-agent-guardrails">Guardrails</a>
+
+        <!-- COMPARISON -->
+        <a href="/opa-vs-actra">OPA Alternative</a>
+
+        <!-- TECH -->
+        <a href="/runtime-policy-engine">Runtime</a>
+
+        <a href="/claude-skill">Claude Skill</a>
+
+        <!-- DOCS -->
+        <a href="https://docs.actra.dev">Docs</a>
+
+        <!-- GITHUB -->
+        <a href="https://github.com/getactra/actra">GitHub</a>
+
+        <a href="/ai-risk">Test AI Risk</a>
+
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:12px">
+
+        <!-- PRIMARY CTA -->
+        <a class="btn" href="playground" style="padding:8px 16px;font-size:13px">
+          Playground
+        </a>
+
+        <!-- THEME TOGGLE -->
+        <button id="themeToggle" style="
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid var(--panel-soft);
+      background:var(--panel);
+      color:var(--text);
+      cursor:pointer;
+      font-size:12px;
+    ">
+          🌙 Dark
+        </button>
+
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div style="
+    display:inline-block;
+    padding:6px 12px;
+    border:1px solid var(--accent);
+    border-radius:20px;
+    font-size:11px;
+    color:var(--accent);
+    margin-bottom:12px;
+  ">
+        AI Policy Generator • Claude Skill
+      </div>
+
+      <h1>
+        AI Agent Guardrails <br />
+        Generate Policies with Natural Language
+      </h1>
+
+      <p>
+        Describe what should be allowed or blocked.<br />
+        Generate enforceable Actra policies instantly.
+      </p>
+
+      <p>
+        <span style="color:var(--muted)">
+          Turn prompts into runtime guardrails for agents, APIs and workflows.
+        </span>
+      </p>
+
+      <div style="margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn" href="https://raw.githubusercontent.com/getactra/actra/main/claude/actra-policy-generator.skill">
+          Download Skill
+        </a>
+
+        <a class="btn" href="https://github.com/getactra/actra/tree/main/claude">
+          View on GitHub
+        </a>
+      </div>
+
+      <div style="
+  margin-top:16px;
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+">
+        ⚡ You can instantly validate generated policies in the browser —
+        no installation or code required.
+
+        <div style="margin-top:10px;">
+          <a href="playground" style="
+         display:inline-block;
+         padding:8px 16px;
+         border-radius:8px;
+         background:linear-gradient(135deg, var(--accent), var(--accent2));
+         color:white;
+         text-decoration:none;
+         font-weight:600;
+         font-size:13px;
+       ">
+            Try in Playground
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- WHAT IS -->
+    <section class="section">
+
+      <h2>What are AI Agent Guardrails?</h2>
+
+      <p style="text-align:center;color:var(--muted);max-width:720px;margin:auto">
+        AI agent guardrails are rules that control what automated systems can do.
+        They prevent unsafe actions such as large financial operations,
+        infrastructure changes, or unauthorized API calls.
+        <br /><br />
+        The Actra Claude Skill generates these guardrails as structured policies
+        that Actra enforces before execution.
+      </p>
+
+    </section>
+
+    <!-- HOW IT FITS -->
+    <section class="section">
+
+      <h2>From Prompt to Enforcement</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>✍️ Describe intent</h3>
+          <p>Write what should be allowed or blocked in natural language.</p>
+        </div>
+
+        <div class="card">
+          <h3>⚙️ Generate policy</h3>
+          <p>Claude converts it into structured Actra YAML.</p>
+        </div>
+
+        <div class="card">
+          <h3>🛡️ Enforce at runtime</h3>
+          <p>Actra evaluates and blocks unsafe actions before execution.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- USE CASES -->
+    <section class="section">
+
+      <h2>Use Cases</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>🤖 Agent Guardrails</h3>
+          <p>Control what AI agents can do across tools and APIs.</p>
+        </div>
+
+        <div class="card">
+          <h3>💳 Financial Controls</h3>
+          <p>Block large refunds or risky transactions.</p>
+        </div>
+
+        <div class="card">
+          <h3>🔧 API Safety</h3>
+          <p>Prevent unsafe or destructive API calls.</p>
+        </div>
+
+        <div class="card">
+          <h3>🏗 Infrastructure Safety</h3>
+          <p>Restrict deployments and system modifications.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PROMPTS -->
+    <section class="section">
+
+      <h2>Example Prompts</h2>
+
+      <div class="card">
+        <p>Generate a policy to block refunds above 5000</p>
+      </div>
+
+      <div class="card">
+        <p>Allow refunds above 5000 only for admin users</p>
+      </div>
+
+      <div class="card">
+        <p>Create a governance rule for delete actions</p>
+      </div>
+
+      <div class="card">
+        <p>Block AI agents from modifying infrastructure</p>
+      </div>
+
+    </section>
+
+    <!-- OUTPUT -->
+    <section class="section">
+
+      <h2>Example Output</h2>
+
+
+      <div class="editor">
+        <div class="editor-header">Policy YAML</div>
+        <textarea id="policy-editor">
+version: 1
+
+rules:
+  - id: block_large_refund
+    scope:
+      action: refund
+    when:
+      subject:
+        domain: action
+        field: amount
+      operator: greater_than
+      value:
+        literal: 1000
+    effect: block
+</textarea>
+      </div>
+
+
+    </section>
+
+    <!-- LINK BACK -->
+
+    <section class="section">
+
+      <h2>Works with Actra Runtime</h2>
+
+      <p style="text-align:center;color:var(--muted);max-width:720px;margin:auto">
+        Generate policies using Claude, then enforce them using Actra.
+        <br /><br />
+        Learn more about
+        <a href="/ai-agent-guardrails">AI Agent Guardrails</a>,
+        <a href="/runtime-policy-engine">runtime policy engines</a>, and
+        <a href="/agentic-governance">agentic governance</a>.
+      </p>
+
+    </section>
+
+    <!-- CTA -->
+
+    <section class="section compact no-animate" style="text-align:center">
+
+      <h2>Start generating policies</h2>
+
+      <div class="buttons">
+        <a class="btn" href="https://raw.githubusercontent.com/getactra/actra/main/claude/actra-policy-generator.skill">
+          Download Skill
+        </a>
+        <a class="btn" href="playground">Try Playground</a>
+      </div>
+
+    </section>
+
+    <footer style="margin-top:80px;padding:50px 0 30px;border-top:1px solid #1f2937">
+
+      <div style="
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap:30px;
+    max-width:1150px;
+    margin:auto;
+    padding:0 24px;
+  ">
+
+        <!-- BRAND -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Actra</div>
+          <p style="color:var(--muted);font-size:13px;line-height:1.6">
+            Agentic governance layer for AI agents, APIs and workflows.
+            Enforce policies at runtime with zero latency.
+          </p>
+        </div>
+
+        <!-- PLATFORM -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">PLATFORM</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="//actra.dev/agentic-governance">Agentic Governance</a>
+            <a href="//actra.dev/runtime-policy-engine">Runtime Policy Engine</a>
+            <a href="//actra.dev/ai-agent-guardrails">AI Agent Guardrails</a>
+          </div>
+        </div>
+
+        <!-- COMPARE -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Compare</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="//actra.dev/opa-vs-actra">OPA Alternative</a>
+          </div>
+        </div>
+
+        <!-- DEVELOPERS -->
+        <div>
+          <div style="font-weight:600;margin-bottom:12px">Developers</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <a href="https://docs.actra.dev">Documentation</a>
+            <a href="https://github.com/getactra/actra">GitHub</a>
+            <a href="//actra.dev/playground">Playground</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM -->
+      <div style="
+    margin-top:40px;
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+  ">
+        © 2026 Actra • AI Agent Governance & In-Process Policy Engine
+      </div>
+
+    </footer>
+
+  </div>
+
+  <script>
+
+    const policyEditor = CodeMirror.fromTextArea(
+      document.getElementById("policy-editor"),
+      {
+        mode: "yaml",
+        theme: "material-darker",
+        lineNumbers: true,
+        indentUnit: 2,
+        tabSize: 2,
+        lineWrapping: true
+      }
+    );
+
+    //Theme toggle
+    const toggleBtn = document.getElementById("themeToggle");
+
+    // load saved theme
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.add("light");
+      toggleBtn.textContent = "☀️ Light";
+    }
+
+    // toggle click
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+
+      const isLight = document.body.classList.contains("light");
+
+      toggleBtn.textContent = isLight ? "☀️ Light" : "🌙 Dark";
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    });
+
+  </script>
+</body>
+
+</html>

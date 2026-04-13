@@ -62,6 +62,8 @@
         <!-- TECH -->
         <a href="/runtime-policy-engine">Runtime</a>
 
+        <a href="/claude-skill">Claude Skill</a>
+
         <!-- DOCS -->
         <a href="https://docs.actra.dev">Docs</a>
 
@@ -96,8 +98,8 @@
     </header>
 
     <!-- HERO -->
-<section class="hero">
-  <div style="
+    <section class="hero">
+      <div style="
     display:inline-block;
     padding:6px 12px;
     border:1px solid var(--accent);
@@ -106,46 +108,45 @@
     color:var(--accent);
     margin-bottom:12px;
   ">
-    Agentic Governance • Runtime Policy Engine
-  </div>
+        Agentic Governance • Runtime Policy Engine
+      </div>
 
-  <h1>
-    AI Agent Governance & Policy Engine <br />
-    Control Actions Before Execution
-  </h1>
+      <h1>
+        AI Agent Governance & Policy Engine -<br />
+        Control Actions Before Execution
+      </h1>
+      <p style="text-align:center;color:var(--accent2);font-size:13px;margin-top:6px">
+        Generate policies with Claude, enforce with Actra
+      </p>
+      <p>
+        Enforce guardrails for AI agents, APIs, and workflows - at runtime.
+      </p>
 
-  <p>
-    Enforce guardrails for AI agents, APIs, and workflows - at runtime.
-  </p>
+      <p>
+        Evaluate policies inside your application.<br />
+        <span style="color:var(--muted)">
+          No servers. No latency. Deterministic decisions.
+        </span>
+      </p>
 
-  <p>
-    Evaluate policies inside your application.<br />
-    <span style="color:var(--muted)">
-      No servers. No latency. Deterministic decisions.
-    </span>
-  </p>
+      <p style="text-align:center;color:var(--accent2);font-size:13px;margin-top:6px">
+        Open-source • Lightweight
+      </p>
 
-  <p style="text-align:center;color:var(--accent2);font-size:13px;margin-top:6px">
-    Open-source • Lightweight
-  </p>
+      <div style="margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
 
-  <div style="margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn" href="playground">
+          Try Playground
+        </a>
+        <a class="btn" href="https://raw.githubusercontent.com/getactra/actra/main/claude/actra.skill">
+          Download Claude Skill
+        </a>
+        <a class="btn" href="/ai-risk">
+          Test AI Risk
+        </a>
 
-    <a class="btn" href="playground">
-      Try Playground
-    </a>
-
-    <a class="btn" href="/ai-risk">
-      Test AI Risk →
-    </a>
-
-  </div>
-
-  <p style="margin-top:12px; font-size:13px; color:var(--muted)">
-    See how an AI system can issue unsafe actions without safeguards
-  </p>
-
-</section>
+      </div>
+    </section>
 
 
     <section class="section" id="agentic-governance">
@@ -165,6 +166,9 @@
 
       <div class="buttons">
         <a class="btn" href="https://docs.actra.dev">Get Started</a>
+        <a class="btn" href="https://raw.githubusercontent.com/getactra/actra/main/claude/actra.skill">
+          Download Claude Skill
+        </a>
         <a class="btn" href="https://github.com/getactra/actra">GitHub</a>
         <a class="btn" href="playground">Playground</a>
       </div>
@@ -391,6 +395,51 @@
         </div>
 
       </div>
+    </section>
+
+
+    <section class="section">
+
+      <h2>Generate Policies with AI</h2>
+
+      <p style="text-align:center;color:var(--muted);max-width:720px;margin:auto">
+        Writing policies manually can be complex.
+        Actra provides a Claude Skill to generate policies using natural language.
+        <br /><br />
+        Describe what should be allowed or blocked - get valid policy YAML instantly.
+      </p>
+
+      <div class="grid" style="margin-top:30px">
+
+        <div class="card">
+          <h3>✍️ Describe intent</h3>
+          <p>Write rules in plain English - no need to learn policy syntax.</p>
+        </div>
+
+        <div class="card">
+          <h3>⚙️ Generate Policies</h3>
+          <p>Claude converts your intent into structured Actra policies.</p>
+        </div>
+
+        <div class="card">
+          <h3>🛡️ Enforce instantly</h3>
+          <p>Load into Actra and enforce decisions before execution.</p>
+        </div>
+
+      </div>
+
+      <div style="text-align:center;margin-top:28px">
+
+        <a class="btn" href="https://raw.githubusercontent.com/getactra/actra/main/claude/actra.skill">
+          Download Claude Skill
+        </a>
+
+        <a class="btn" href="/claude-skill" style="margin-left:10px">
+          Learn More →
+        </a>
+
+      </div>
+
     </section>
 
 
@@ -923,7 +972,7 @@ decision = actra.evaluate({
       observer.observe(section);
     });
 
-
+    //Theme toggle
     const toggleBtn = document.getElementById("themeToggle");
 
     // load saved theme
@@ -943,4 +992,5 @@ decision = actra.evaluate({
     });
   </script>
 </body>
+
 </html>
